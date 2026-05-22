@@ -1,19 +1,27 @@
 package utility;
 
 
+import static entity.EntityType.GRASS;
+import static entity.EntityType.PREDATOR;
+import static main.Simulation.EMPTY_SPACE;
+
 import entity.Coordination;
 import entity.Entity;
-import entity.herbivore.Herbivore;
-import entity.predator.Predator;
+import entity.EntityType;
+import entity.Herbivore;
+import entity.Predator;
 import entity.staticObject.Grass;
+import exception.EntityNotExistException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Queue;
 import main.GameMap;
 
-public class MapUtility {
+public final class MapUtility {
 
   public static final int VALUE_OF_GRASS = 5;
   public static final int VALUE_OF_HERBIVORE = 5;
@@ -23,24 +31,59 @@ public class MapUtility {
   public static final String ROCK_SPRITE = "\uD83E\uDEA8";
   public static final String TREE_SPRITE = "\uD83C\uDF33";
 
-  public static Coordination getEntityCoordinate(GameMap map, Entity entity){
-    for(Map.Entry<Coordination, Entity> element : map.getEntrySet()){
-      if(element.getValue() != null && element.getValue().equals(entity)){
-        return element.getKey();
-      }
-    }
-    return null;
+  private MapUtility(){
+
+  }
+
+//  public static <T> String getEntitySprite(EntityType type){
+//    String sprite = switch (type){
+//      case PREDATOR -> PREDATOR_SPRITE;
+//      case HERBIVORE -> HERBIVORE_SPRITE;
+//      case GRASS -> GRASS_SPRITE;
+//    };
+//    return sprite;
+//  }
+//  public static <T> String getEntitySprite(Class<T> type){
+//    if(type.isInstance(Predator.class)){
+//      return PREDATOR_SPRITE;
+//    }
+//    else if (type.isInstance(Herbivore.class)){
+//      return HERBIVORE_SPRITE;
+//    }
+//    else if(type.isInstance(Grass.class)){
+//      return GRASS_SPRITE;
+//    }
+//    return null;
+//  }
+public static String getEntitySprite(Entity entity){
+  if(entity instanceof Predator){
+    return PREDATOR_SPRITE;
+  }
+  else if (entity instanceof Herbivore){
+    return HERBIVORE_SPRITE;
+  }
+  else if(entity instanceof Grass){
+    return GRASS_SPRITE;
+  }
+  return null;
+}
+
+  public static <T> boolean checkClassType(GameMap map, Coordination coordination, Class<T> type) {
+    boolean emptyCell = false;
+    Optional<Entity> entity = map.getEntityByCoordinate(coordination, Entity.class);
+    return entity.map(type::isInstance).orElse(emptyCell);
   }
 
   public static boolean fieldIsEmpty(Coordination coordination, GameMap map) {
-    return (map.getEntityByCoordinate(coordination) == null);
+    return map.getEntityByCoordinate(coordination, Entity.class).isEmpty();
   }
-  // Get separate entity coordinates
-  public static List<Queue<Coordination>> getCreaturesCoordinates(GameMap map) {
+
+  public static List<Queue<Coordination>> getInfoByCreaturesCoordinates(GameMap map) {
 
     Queue<Coordination> herbivoreCoordinates = new ArrayDeque<>();
     Queue<Coordination> predatorCoordinates = new ArrayDeque<>();
     Queue<Coordination> grassCoordinates = new ArrayDeque<>();
+
 
     for (Map.Entry<Coordination, Entity> element : map.getEntrySet()) {
       if (element.getValue() instanceof Herbivore) {

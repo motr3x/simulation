@@ -5,6 +5,8 @@ import entity.Entity;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 public class GameMap {
@@ -14,16 +16,30 @@ public class GameMap {
   public void setMap(Coordination coordination, Entity entity) {
     map.put(coordination, entity);
   }
-
-  public Entity getEntityByCoordinate(Coordination coordination){
-    return map.get(coordination);
+  //TODO add Optional return type
+  public <T extends Entity> Optional<T> getEntityByCoordinate(Coordination coordination, Class<T> type) {
+    Entity entity = map.get(coordination);
+    if (type.isInstance(entity)) {
+      return Optional.of(type.cast(entity));
+    }
+    return Optional.empty();
+  }
+  //TODO add Optional return type
+  public Optional<Coordination> getCoordinateByEntity(Entity entity) {
+    for (Map.Entry<Coordination, Entity> entry : map.entrySet()) {
+      if (Objects.equals(entity, entry.getValue())) {
+        return Optional.of(entry.getKey());
+      }
+    }
+    return Optional.empty();
   }
 
-  public Set<Entry<Coordination, Entity>> getEntrySet(){
-    return map.entrySet();
+  public Set<Entry<Coordination, Entity>> getEntrySet() {
+    Set<Entry<Coordination, Entity>> copyOfEntrySet = map.entrySet();
+    return copyOfEntrySet;
   }
 
-  public void removeEntityByCoordinate(Coordination coordination){
+  public void removeEntityByCoordinate(Coordination coordination) {
     map.remove(coordination);
   }
 }

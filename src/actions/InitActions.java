@@ -7,20 +7,33 @@ import static main.Simulation.MIN_X_COORDINATE;
 import static main.Simulation.MIN_Y_COORDINATE;
 
 import entity.Coordination;
-import entity.herbivore.Herbivore;
-import entity.predator.Predator;
-import entity.staticObject.Grass;
+import entity.Entity;
+import entity.EntityType;
+import entity.factory.EntityFactory;
+import entity.factory.GrassFactory;
+import entity.factory.HerbivoreFactory;
+import entity.factory.PredatorFactory;
 import java.util.List;
+import java.util.Map;
 import main.GameMap;
 import main.Graph;
+import utility.EntitySpawner;
 
 
 // действия, совершаемые перед стартом симуляции. Пример - расставить объекты и существ на карте
-public class InitActions {
+public final class InitActions {
 
   private static final int MIN_INIT_COUNT_OF_HERBIVORE = 2;
   private static final int MIN_INIT_COUNT_OF_PREDATOR = 2;
   private static final int MIN_INIT_COUNT_OF_GRASS = 10;
+
+  public static final Map<EntityType, EntityFactory> factoriesStorage = Map.of(
+      EntityType.PREDATOR, new PredatorFactory(),
+      EntityType.HERBIVORE, new HerbivoreFactory(),
+      EntityType.GRASS, new GrassFactory()
+  );
+
+  public static final EntitySpawner entitySpawner = new EntitySpawner(factoriesStorage);
 
   public static void initMap(GameMap map) {
     initStartGrass(map);
@@ -104,7 +117,7 @@ public class InitActions {
   private static void initStartGrass(GameMap map) {
     int countOfGrass = 0;
     while (countOfGrass < MIN_INIT_COUNT_OF_GRASS) {
-      Grass.create(map);
+      entitySpawner.spawn(EntityType.GRASS, map);
       countOfGrass++;
     }
   }
@@ -112,7 +125,7 @@ public class InitActions {
   private static void initStartPredator(GameMap map) {
     int countOfPredator = 0;
     while (countOfPredator < MIN_INIT_COUNT_OF_PREDATOR) {
-      Predator.create(map);
+      entitySpawner.spawn(EntityType.PREDATOR, map);
       countOfPredator++;
     }
   }
@@ -120,7 +133,7 @@ public class InitActions {
   private static void initStartHerbivore(GameMap map) {
     int countOfHerbivore = 0;
     while (countOfHerbivore < MIN_INIT_COUNT_OF_HERBIVORE) {
-      Herbivore.create(map);
+      entitySpawner.spawn(EntityType.HERBIVORE, map);
       countOfHerbivore++;
     }
   }

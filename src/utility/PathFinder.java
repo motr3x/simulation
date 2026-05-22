@@ -1,7 +1,9 @@
 package utility;
 
 import entity.Coordination;
-import entity.ability.MoveAble;
+import entity.Creature;
+import entity.rule.MoveRule;
+import exception.EntityNotExistException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -12,11 +14,15 @@ import java.util.Optional;
 import java.util.Set;
 import main.GameMap;
 
-public class PathFinder {
+public final class PathFinder {
+
+  private PathFinder(){
+
+  }
 
   public static Optional<Deque<Coordination>> useBfsAlgorithm(
       Map<Coordination, List<Coordination>> graph,
-      Coordination start, Coordination goal, GameMap map, MoveAble moveable) {
+      Coordination start, Coordination goal, GameMap map) {
 
     Set<Coordination> visited = new LinkedHashSet<>();
     Deque<List<Coordination>> queue = new ArrayDeque<>();
@@ -28,7 +34,8 @@ public class PathFinder {
       queue.removeFirst();// берем путь
       Coordination node = path.getLast();// последний элемент пути
       if (node != start) {
-        if (moveable.checkBarrier(map, node)) {
+        MoveRule creature = map.getEntityByCoordinate(start, Creature.class).orElseThrow(() -> new EntityNotExistException("Entity doesn't exist"));;
+        if (creature.checkBarrier(map, node)) {
           continue;
         }
       }
