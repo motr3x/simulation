@@ -51,7 +51,7 @@ public final class PathFinder {
       }
 
       List<Coordination> neighbors = graph.get(node);
-      if (neighbors == null) {
+      if (neighbors.isEmpty()) {
         continue;
       }
       for (Coordination neighbor : neighbors) {

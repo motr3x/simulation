@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Graph {
+public final class Graph {
 
   private final Map<Coordination, List<Coordination>> graph = new HashMap<>();
 

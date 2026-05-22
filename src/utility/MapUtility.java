@@ -1,20 +1,15 @@
 package utility;
 
 
-import static entity.EntityType.GRASS;
-import static entity.EntityType.PREDATOR;
-import static main.Simulation.EMPTY_SPACE;
+import static main.Simulation.EMPTY_SPRITE;
 
 import entity.Coordination;
 import entity.Entity;
-import entity.EntityType;
 import entity.Herbivore;
 import entity.Predator;
 import entity.staticObject.Grass;
-import exception.EntityNotExistException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -35,37 +30,13 @@ public final class MapUtility {
 
   }
 
-//  public static <T> String getEntitySprite(EntityType type){
-//    String sprite = switch (type){
-//      case PREDATOR -> PREDATOR_SPRITE;
-//      case HERBIVORE -> HERBIVORE_SPRITE;
-//      case GRASS -> GRASS_SPRITE;
-//    };
-//    return sprite;
-//  }
-//  public static <T> String getEntitySprite(Class<T> type){
-//    if(type.isInstance(Predator.class)){
-//      return PREDATOR_SPRITE;
-//    }
-//    else if (type.isInstance(Herbivore.class)){
-//      return HERBIVORE_SPRITE;
-//    }
-//    else if(type.isInstance(Grass.class)){
-//      return GRASS_SPRITE;
-//    }
-//    return null;
-//  }
-public static String getEntitySprite(Entity entity){
-  if(entity instanceof Predator){
-    return PREDATOR_SPRITE;
-  }
-  else if (entity instanceof Herbivore){
-    return HERBIVORE_SPRITE;
-  }
-  else if(entity instanceof Grass){
-    return GRASS_SPRITE;
-  }
-  return null;
+public static Optional<String> getEntitySprite(Entity entity){
+  return switch (entity) {
+    case Predator predator -> Optional.of(PREDATOR_SPRITE);
+    case Herbivore herbivore -> Optional.of(HERBIVORE_SPRITE);
+    case Grass grass -> Optional.of(GRASS_SPRITE);
+    case null, default -> Optional.empty();
+  };
 }
 
   public static <T> boolean checkClassType(GameMap map, Coordination coordination, Class<T> type) {

@@ -10,16 +10,14 @@ import static utility.OtherUtility.clearScreen;
 import entity.Coordination;
 import entity.Creature;
 import entity.Entity;
-import entity.EntityType;
 import exception.EntityNotExistException;
 import java.util.ArrayDeque;
 import java.util.List;
 import java.util.Optional;
 import java.util.Queue;
-import utility.MapUtility;
 
 
-public class Simulation {
+public final class Simulation {
 
   private final GameMap gameMap;
   private final Graph graph;
@@ -28,7 +26,7 @@ public class Simulation {
   public static final int MAX_Y_COORDINATE = 10;
   public static final int MIN_Y_COORDINATE = 1;
   public static final int PENULTIMATE_Y_COORDINATE = MAX_Y_COORDINATE - 1;
-  public static final String EMPTY_SPACE = "\uD83D\uDDFE";
+  public static final String EMPTY_SPRITE = "\uD83D\uDDFE";
 
   public Simulation(GameMap gameMap, Graph graph) {
     this.gameMap = gameMap;
@@ -50,19 +48,15 @@ public class Simulation {
   private void renderField(GameMap map) {
     for (int yCoordinate = MAX_Y_COORDINATE; yCoordinate >= MIN_Y_COORDINATE; yCoordinate--) {
       for (int xCoordinate = MIN_X_COORDINATE; xCoordinate <= MAX_X_COORDINATE; xCoordinate++) {
-        Optional<Entity> entity = map.getEntityByCoordinate(new Coordination(xCoordinate, yCoordinate), Entity.class);
-        Optional<String> sprite = entity.map(MapUtility::getEntitySprite);
-        sprite.ifPresentOrElse(
-            System.out::print,
-            () -> System.out.print(EMPTY_SPACE)
-        );
-//        if (entity != null) {
-//          System.out.print(getEntitySprite(entity));
-//          continue;
-//        }
-//        else {
-//          System.out.print(EMPTY_SPACE);
-//        }
+        Optional<String> sprite = Optional.empty();
+        // Получаем сущность, может быть нулем
+        Optional<Entity> entity = map.getEntityByCoordinate(
+            new Coordination(xCoordinate, yCoordinate), Entity.class);
+        if (entity.isPresent()) {
+          sprite = getEntitySprite(entity.get());
+        }
+        System.out.print(sprite.orElse(EMPTY_SPRITE));
+
         printInfoBar(map, xCoordinate, yCoordinate);
       }
       System.out.println();
@@ -84,7 +78,7 @@ public class Simulation {
     clearScreen();
   }
 
-  // TODO REFACTORING
+
   private void printInfoBar(GameMap map, int xCoordinate, int yCoordinate) {
     // GET INFO BY CREATURES COORDINATES
     List<Queue<Coordination>> array = getInfoByCreaturesCoordinates(map);
@@ -92,24 +86,30 @@ public class Simulation {
     Queue<Coordination> predatorCoordinates = new ArrayDeque<>(array.get(PREDATORS_PLACE));
 
     // Iterate herbivores and prints info
-    if (isTopCoordinate(xCoordinate, yCoordinate)) {
-      while (!herbivoreCoordinates.isEmpty()) {
-        Creature creature = map.getEntityByCoordinate(herbivoreCoordinates.poll(), Creature.class).orElseThrow(() -> new EntityNotExistException("Entity doesn't exist"));;
-        System.out.print("[ " + getEntitySprite(creature) + " : " + creature.getHp() + " hp ]");
-      }
-    }
-    // Iterate herbivores and prints info
-    if (isAfterTopCoordinate(xCoordinate, yCoordinate)) {
-      while (!predatorCoordinates.isEmpty()) {
-        Creature creature = map.getEntityByCoordinate(predatorCoordinates.poll(), Creature.class).orElseThrow(() -> new EntityNotExistException("Entity doesn't exist"));;
-        System.out.print("[ " + getEntitySprite(creature) + " : " + creature.getHp() + " hp ]");
+    printInfoByCreatures(map, herbivoreCoordinates, isTopCoordinate(xCoordinate, yCoordinate));
+
+    // Iterate predators and prints info
+    printInfoByCreatures(map, predatorCoordinates, isAfterTopCoordinate(xCoordinate, yCoordinate));
+
+  }
+
+  private void printInfoByCreatures(GameMap map, Queue<Coordination> creaturesCoordinates,
+      boolean positionFlag) {
+    if (positionFlag) {
+      while (!creaturesCoordinates.isEmpty()) {
+        Creature creature = map.getEntityByCoordinate(creaturesCoordinates.poll(), Creature.class)
+            .orElseThrow(() -> new EntityNotExistException("Entity doesn't exist"));
+        Optional<String> sprite = getEntitySprite(creature);
+        sprite.ifPresent(s -> System.out.print("[ " + s + " : " + creature.getHp() + " hp ]"));
       }
     }
   }
-  private boolean isTopCoordinate(int xCoordinate, int yCoordinate){
+
+  private boolean isTopCoordinate(int xCoordinate, int yCoordinate) {
     return yCoordinate == MAX_Y_COORDINATE && xCoordinate == MAX_X_COORDINATE;
   }
-  private boolean isAfterTopCoordinate(int xCoordinate, int yCoordinate){
+
+  private boolean isAfterTopCoordinate(int xCoordinate, int yCoordinate) {
     return yCoordinate == PENULTIMATE_Y_COORDINATE && xCoordinate == MAX_X_COORDINATE;
   }
 

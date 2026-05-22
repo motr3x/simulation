@@ -9,7 +9,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
-public class GameMap {
+public final class GameMap {
 
   private final Map<Coordination, Entity> map = new LinkedHashMap<>();
 
