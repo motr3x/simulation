@@ -5,9 +5,9 @@ import static entity.EntityType.GRASS;
 import static utility.MapUtility.getInfoByCreaturesCoordinates;
 
 import entity.Coordination;
+import entity.Creature;
 import entity.Herbivore;
 import entity.Predator;
-import entity.ability.Moveable;
 import exception.EntityNotExistException;
 import java.util.Queue;
 import main.GameMap;
@@ -28,13 +28,13 @@ public final class TurnAction {
     Queue<Coordination> herbivores = getInfoByCreaturesCoordinates(gameMap).get(HERBIVORE_PLACE);
 
     while (!herbivores.isEmpty()) {
-      Moveable herbivore = gameMap.getEntityByCoordinate(herbivores.poll(), Herbivore.class)
+      Creature herbivore = gameMap.getEntityByCoordinate(herbivores.poll(), Herbivore.class)
           .orElseThrow(() -> new EntityNotExistException("Entity doesn't exist"));
       herbivore.makeMove(gameMap, graph);
     }
 
     while (!predators.isEmpty()) {
-      Moveable predator = gameMap.getEntityByCoordinate(predators.poll(), Predator.class)
+      Creature predator = gameMap.getEntityByCoordinate(predators.poll(), Predator.class)
           .orElseThrow(() -> new EntityNotExistException("Entity doesn't exist"));
       ;
       predator.makeMove(gameMap, graph);

@@ -10,23 +10,20 @@ import static main.Simulation.MIN_X_COORDINATE;
 import static main.Simulation.MIN_Y_COORDINATE;
 
 import entity.Coordination;
-import entity.EntityType;
-import entity.factory.EntityFactory;
 import java.util.List;
-import java.util.Map;
 import main.GameMap;
 import main.Graph;
 import utility.EntitySpawner;
 
 
-// действия, совершаемые перед стартом симуляции. Пример - расставить объекты и существ на карте
+// Действия, совершаемые перед стартом симуляции. Пример - расставить объекты и существ на карте
 public final class InitActions {
+
+  public static final EntitySpawner SPAWNER = new EntitySpawner();
 
   private static final int MIN_INIT_COUNT_OF_HERBIVORE = 2;
   private static final int MIN_INIT_COUNT_OF_PREDATOR = 2;
   private static final int MIN_INIT_COUNT_OF_GRASS = 10;
-
-  public static final EntitySpawner SPAWNER = new EntitySpawner();
 
   public static void initMap(GameMap map) {
     initStartGrass(map);

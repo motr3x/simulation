@@ -2,7 +2,6 @@ package utility;
 
 import entity.Coordination;
 import entity.Creature;
-import entity.rule.MoveRule;
 import exception.EntityNotExistException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -34,7 +33,7 @@ public final class PathFinder {
       queue.removeFirst();// берем путь
       Coordination node = path.getLast();// последний элемент пути
       if (node != start) {
-        MoveRule creature = map.getEntityByCoordinate(start, Creature.class).orElseThrow(() -> new EntityNotExistException("Entity doesn't exist"));;
+        Creature creature = map.getEntityByCoordinate(start, Creature.class).orElseThrow(() -> new EntityNotExistException("Entity doesn't exist"));;
         if (creature.checkBarrier(map, node)) {
           continue;
         }

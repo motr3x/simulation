@@ -5,7 +5,6 @@ import static utility.PathFinder.useBfsAlgorithm;
 import entity.Coordination;
 import entity.Creature;
 import entity.Entity;
-import entity.rule.RoutineRule;
 import exception.EntityNotExistException;
 import exception.GoalNotExistException;
 import java.util.Deque;
@@ -82,7 +81,7 @@ public final class MoveUtility {
   }
 
   private static void makeRoutine(GameMap map, Coordination creatureCoordinate) {
-    RoutineRule creature = map.getEntityByCoordinate(creatureCoordinate, Creature.class).orElseThrow(() -> new EntityNotExistException("Entity doesn't exist"));;
+    Creature creature = map.getEntityByCoordinate(creatureCoordinate, Creature.class).orElseThrow(() -> new EntityNotExistException("Entity doesn't exist"));;
     creature.reproduce(map);
     creature.starve(map);
   }

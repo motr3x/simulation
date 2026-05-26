@@ -16,9 +16,8 @@ import main.GameMap;
 
 public class Predator extends Creature {
 
-
   // create default predator
-  public Predator(){
+  public Predator() {
     super();
   }
 
@@ -38,6 +37,7 @@ public class Predator extends Creature {
       SPAWNER.spawnToMap(map, PREDATOR);
     }
   }
+
   @Override
   public void upHp() {
     setHp(getHp() + VALUE_OF_HERBIVORE);
@@ -45,7 +45,8 @@ public class Predator extends Creature {
 
   @Override
   public void makeAttack(GameMap map, Coordination goalCoordinate) {
-    Creature goalCreature = map.getEntityByCoordinate(goalCoordinate, Creature.class).orElseThrow(() -> new EntityNotExistException("Entity doesn't exist"));
+    Creature goalCreature = map.getEntityByCoordinate(goalCoordinate, Creature.class)
+        .orElseThrow(() -> new EntityNotExistException("Entity doesn't exist"));
     if (isDead(goalCreature)) {
       upHp();
       map.removeEntityByCoordinate(goalCoordinate);
@@ -53,11 +54,6 @@ public class Predator extends Creature {
     }
     int herbivoreHp = goalCreature.getHp();
     goalCreature.setHp(herbivoreHp - getPower());
-  }
-
-  private boolean isDead(Creature goalCreature) {
-    int herbivoreHp = goalCreature.getHp();
-    return herbivoreHp <= getPower();
   }
 
   @Override
@@ -71,5 +67,10 @@ public class Predator extends Creature {
   @Override
   public boolean isGoal(GameMap map, Coordination followCoordinate) {
     return (checkClassType(map, followCoordinate, Herbivore.class));
+  }
+
+  private boolean isDead(Creature goalCreature) {
+    int herbivoreHp = goalCreature.getHp();
+    return herbivoreHp <= getPower();
   }
 }

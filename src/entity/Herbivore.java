@@ -5,7 +5,6 @@ import static actions.InitActions.SPAWNER;
 import static entity.CreatureConfig.CHILD_COST;
 import static entity.CreatureConfig.MIN_HP_FOR_REPRODUCTION;
 import static entity.EntityType.HERBIVORE;
-import static entity.EntityType.PREDATOR;
 import static utility.MapUtility.VALUE_OF_GRASS;
 import static utility.MapUtility.checkClassType;
 
@@ -15,10 +14,12 @@ import entity.staticObject.Tree;
 import main.GameMap;
 
 public class Herbivore extends Creature {
+
   // create default herbivore
   public Herbivore() {
     super();
   }
+
   // create custom herbivore
   public Herbivore(int hp, int speed) {
     super(hp, speed);
