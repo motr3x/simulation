@@ -16,15 +16,20 @@ public final class GameMap {
   public void setMap(Coordination coordination, Entity entity) {
     map.put(coordination, entity);
   }
-  //TODO add Optional return type
-  public <T extends Entity> Optional<T> getEntityByCoordinate(Coordination coordination, Class<T> type) {
+
+  public <T extends Entity> Optional<T> getEntityByCoordinate(Coordination coordination,
+      Class<T> type) {
     Entity entity = map.get(coordination);
     if (type.isInstance(entity)) {
       return Optional.of(type.cast(entity));
     }
     return Optional.empty();
   }
-  //TODO add Optional return type
+  public Optional<Entity> getEntityByCoordinate(Coordination coordination) {
+    Entity entity = map.get(coordination);
+    return Optional.ofNullable(entity);
+  }
+
   public Optional<Coordination> getCoordinateByEntity(Entity entity) {
     for (Map.Entry<Coordination, Entity> entry : map.entrySet()) {
       if (Objects.equals(entity, entry.getValue())) {

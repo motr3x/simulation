@@ -1,12 +1,19 @@
 package entity;
 
+import static actions.InitActions.SPAWNER;
+import static entity.CreatureConfig.CHILD_COST;
+import static entity.CreatureConfig.DEFAULT_CREATURE_HP;
+import static entity.CreatureConfig.DEFAULT_CREATURE_SPEED;
+import static entity.CreatureConfig.HUNGRY_DAMAGE;
+import static entity.CreatureConfig.MIN_CREATURE_HP;
+import static entity.CreatureConfig.MIN_HP_FOR_REPRODUCTION;
+import static entity.EntityType.HERBIVORE;
+import static entity.EntityType.PREDATOR;
 import static utility.MoveUtility.chooseNextCell;
 
 import entity.ability.ActionAble;
 import entity.ability.Moveable;
 import entity.factory.EntityFactory;
-import entity.factory.HerbivoreFactory;
-import entity.factory.PredatorFactory;
 import entity.rule.MoveRule;
 import entity.rule.RoutineRule;
 import exception.EntityNotExistException;
@@ -17,19 +24,18 @@ import main.Graph;
 public abstract class Creature extends Entity implements Moveable, MoveRule, RoutineRule,
     ActionAble {
 
-  private static final int HUNGRY_DAMAGE = 1;
-  public static final int DEFAULT_CREATURE_HP = 20;
-  public static final int DEFAULT_CREATURE_SPEED = 1;
-  public static final int MIN_CREATURE_HP = 1;
-  public static final int CHILD_COST = 10;
-  public static final int MIN_HP_FOR_REPRODUCTION = 20;
-
   private final int speed;
   private int hp;
 
+  // create custom creature
   public Creature(int hp, int speed) {
     this.hp = hp;
     this.speed = speed;
+  }
+
+  // create default creature
+  public Creature() {
+    this(DEFAULT_CREATURE_HP, DEFAULT_CREATURE_SPEED);
   }
 
   public int getSpeed() {
@@ -59,25 +65,4 @@ public abstract class Creature extends Entity implements Moveable, MoveRule, Rou
     }
     setHp(getHp() - HUNGRY_DAMAGE);
   }
-
-  //TODO THROW EXCEPTION IF DON'T MAKE
-  @Override
-  public void reproduce(GameMap map) {
-    EntityFactory entityFactory;
-    if (getHp() > MIN_HP_FOR_REPRODUCTION) {
-      if (this instanceof Predator) {
-        entityFactory = new PredatorFactory();
-        setHp(getHp() - CHILD_COST);
-        entityFactory.create(map);
-        return;
-      }
-      if (this instanceof Herbivore) {
-        entityFactory = new HerbivoreFactory();
-        setHp(getHp() - CHILD_COST);
-        entityFactory.create(map);
-        return;
-      }
-    }
-  }
-
 }

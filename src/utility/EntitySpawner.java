@@ -1,19 +1,21 @@
 package utility;
 
+import static utility.OtherUtility.getRandomEmptyCoordinate;
+
+import entity.Coordination;
+import entity.Entity;
 import entity.EntityType;
 import entity.factory.EntityFactory;
-import java.util.Map;
 import main.GameMap;
 
 public final class EntitySpawner {
 
-  private final Map<EntityType, EntityFactory> factories;
+  private final EntityFactory FACTORY = new EntityFactory();
 
-  public EntitySpawner(Map<EntityType, EntityFactory> factory) {
-    this.factories = factory;
+  public void spawnToMap(GameMap map, EntityType entityType) {
+    Entity entity = FACTORY.create(entityType);
+    Coordination coordination = getRandomEmptyCoordinate(map);
+    map.setMap(coordination, entity);
   }
 
-  public void spawn(EntityType type, GameMap map) {
-    factories.get(type).create(map);
-  }
 }

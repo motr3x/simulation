@@ -1,15 +1,13 @@
 package actions;
 
-import static actions.InitActions.entitySpawner;
+import static actions.InitActions.SPAWNER;
+import static entity.EntityType.GRASS;
 import static utility.MapUtility.getInfoByCreaturesCoordinates;
 
 import entity.Coordination;
-import entity.EntityType;
 import entity.Herbivore;
 import entity.Predator;
 import entity.ability.Moveable;
-import entity.factory.EntityFactory;
-import entity.factory.GrassFactory;
 import exception.EntityNotExistException;
 import java.util.Queue;
 import main.GameMap;
@@ -27,15 +25,18 @@ public final class TurnAction {
   //передвижение всех существ
   public static void makeMoveForEverybody(GameMap gameMap, Graph graph) {
     Queue<Coordination> predators = getInfoByCreaturesCoordinates(gameMap).get(PREDATORS_PLACE);
-    Queue<Coordination> herbivors = getInfoByCreaturesCoordinates(gameMap).get(HERBIVORE_PLACE);
+    Queue<Coordination> herbivores = getInfoByCreaturesCoordinates(gameMap).get(HERBIVORE_PLACE);
 
-    while (!herbivors.isEmpty()) {
-      Moveable herbivore = gameMap.getEntityByCoordinate(herbivors.poll(), Herbivore.class).orElseThrow(() -> new EntityNotExistException("Entity doesn't exist"));
+    while (!herbivores.isEmpty()) {
+      Moveable herbivore = gameMap.getEntityByCoordinate(herbivores.poll(), Herbivore.class)
+          .orElseThrow(() -> new EntityNotExistException("Entity doesn't exist"));
       herbivore.makeMove(gameMap, graph);
     }
 
     while (!predators.isEmpty()) {
-      Moveable predator = gameMap.getEntityByCoordinate(predators.poll(), Predator.class).orElseThrow(() -> new EntityNotExistException("Entity doesn't exist"));;
+      Moveable predator = gameMap.getEntityByCoordinate(predators.poll(), Predator.class)
+          .orElseThrow(() -> new EntityNotExistException("Entity doesn't exist"));
+      ;
       predator.makeMove(gameMap, graph);
     }
     createMissingGrass(getInfoByCreaturesCoordinates(gameMap).get(GRASS_PLACE), gameMap);
@@ -43,7 +44,7 @@ public final class TurnAction {
 
   private static void createMissingGrass(Queue<Coordination> grassCoordinates, GameMap map) {
     if (!isGrassCountEnough(grassCoordinates)) {
-      entitySpawner.spawn(EntityType.GRASS, map);
+      SPAWNER.spawnToMap(map, GRASS);
     }
   }
 

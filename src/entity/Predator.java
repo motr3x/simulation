@@ -1,29 +1,43 @@
 package entity;
 
+import static actions.InitActions.SPAWNER;
+import static entity.CreatureConfig.CHILD_COST;
+import static entity.CreatureConfig.DEFAULT_CREATURE_POWER;
+import static entity.CreatureConfig.MIN_HP_FOR_REPRODUCTION;
+import static entity.EntityType.PREDATOR;
 import static utility.MapUtility.VALUE_OF_HERBIVORE;
 import static utility.MapUtility.checkClassType;
 
 import entity.staticObject.Grass;
 import entity.staticObject.Rock;
 import entity.staticObject.Tree;
-import exception.EntityNotCreateException;
 import exception.EntityNotExistException;
 import main.GameMap;
 
 public class Predator extends Creature {
 
-  public static final int DEFAULT_PREDATOR_POWER = 10;
-  private final int power;
 
-  public Predator(int hp, int speed, int power) {
+  // create default predator
+  public Predator(){
+    super();
+  }
+
+  // create custom predator
+  public Predator(int hp, int speed) {
     super(hp, speed);
-    this.power = power;
   }
 
   public int getPower() {
-    return power;
+    return DEFAULT_CREATURE_POWER;
   }
 
+  @Override
+  public void reproduce(GameMap map) {
+    if (getHp() > MIN_HP_FOR_REPRODUCTION) {
+      setHp(getHp() - CHILD_COST);
+      SPAWNER.spawnToMap(map, PREDATOR);
+    }
+  }
   @Override
   public void upHp() {
     setHp(getHp() + VALUE_OF_HERBIVORE);

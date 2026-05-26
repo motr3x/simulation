@@ -1,18 +1,17 @@
 package actions;
 
 
+import static entity.EntityType.GRASS;
+import static entity.EntityType.HERBIVORE;
+import static entity.EntityType.PREDATOR;
 import static main.Simulation.MAX_X_COORDINATE;
 import static main.Simulation.MAX_Y_COORDINATE;
 import static main.Simulation.MIN_X_COORDINATE;
 import static main.Simulation.MIN_Y_COORDINATE;
 
 import entity.Coordination;
-import entity.Entity;
 import entity.EntityType;
 import entity.factory.EntityFactory;
-import entity.factory.GrassFactory;
-import entity.factory.HerbivoreFactory;
-import entity.factory.PredatorFactory;
 import java.util.List;
 import java.util.Map;
 import main.GameMap;
@@ -27,13 +26,7 @@ public final class InitActions {
   private static final int MIN_INIT_COUNT_OF_PREDATOR = 2;
   private static final int MIN_INIT_COUNT_OF_GRASS = 10;
 
-  public static final Map<EntityType, EntityFactory> factoriesStorage = Map.of(
-      EntityType.PREDATOR, new PredatorFactory(),
-      EntityType.HERBIVORE, new HerbivoreFactory(),
-      EntityType.GRASS, new GrassFactory()
-  );
-
-  public static final EntitySpawner entitySpawner = new EntitySpawner(factoriesStorage);
+  public static final EntitySpawner SPAWNER = new EntitySpawner();
 
   public static void initMap(GameMap map) {
     initStartGrass(map);
@@ -117,7 +110,7 @@ public final class InitActions {
   private static void initStartGrass(GameMap map) {
     int countOfGrass = 0;
     while (countOfGrass < MIN_INIT_COUNT_OF_GRASS) {
-      entitySpawner.spawn(EntityType.GRASS, map);
+      SPAWNER.spawnToMap(map, GRASS);
       countOfGrass++;
     }
   }
@@ -125,7 +118,7 @@ public final class InitActions {
   private static void initStartPredator(GameMap map) {
     int countOfPredator = 0;
     while (countOfPredator < MIN_INIT_COUNT_OF_PREDATOR) {
-      entitySpawner.spawn(EntityType.PREDATOR, map);
+      SPAWNER.spawnToMap(map, PREDATOR);
       countOfPredator++;
     }
   }
@@ -133,7 +126,7 @@ public final class InitActions {
   private static void initStartHerbivore(GameMap map) {
     int countOfHerbivore = 0;
     while (countOfHerbivore < MIN_INIT_COUNT_OF_HERBIVORE) {
-      entitySpawner.spawn(EntityType.HERBIVORE, map);
+      SPAWNER.spawnToMap(map, HERBIVORE);
       countOfHerbivore++;
     }
   }

@@ -1,24 +1,27 @@
 package entity;
 
-import static utility.MapUtility.GRASS_SPRITE;
-import static utility.MapUtility.HERBIVORE_SPRITE;
-import static utility.MapUtility.PREDATOR_SPRITE;
+import static entity.CreatureConfig.DEFAULT_CREATURE_HP;
+import static entity.CreatureConfig.DEFAULT_CREATURE_SPEED;
+import static entity.CreatureConfig.DEFAULT_CREATURE_POWER;
 
 public enum EntityType {
-  PREDATOR{
-    @Override
-    public String toString() {
-      return PREDATOR_SPRITE;
-    }
-  }, HERBIVORE{
-    @Override
-    public String toString() {
-      return HERBIVORE_SPRITE;
-    }
-  }, GRASS{
-    @Override
-    public String toString() {
-      return GRASS_SPRITE;
-    }
-  }
+//  PREDATOR(DEFAULT_CREATURE_HP, DEFAULT_CREATURE_SPEED, DEFAULT_CREATURE_POWER),
+//  HERBIVORE(DEFAULT_CREATURE_HP, DEFAULT_CREATURE_SPEED, DEFAULT_CREATURE_POWER),
+  PREDATOR,
+  HERBIVORE,
+  GRASS;
+//
+//  public final int hp;
+//  public final int speed;
+//  public final int power;
+//
+//  EntityType(int hp, int speed, int power) {
+//    this.hp = hp;
+//    this.speed = speed;
+//    this.power = power;
+//  }
+//
+//  EntityType() {
+//    this(0,0,0);
+//  }
 }
