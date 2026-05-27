@@ -61,7 +61,7 @@ public final class MoveUtility {
 //      Creature creature = (Creature) map.getEntityByCoordinate(creatureCoordinate);
     if (creature.isGoal(map, followCoordinate)) {
       creature.makeAttack(map, followCoordinate);
-      makeRoutine(map, creatureCoordinate);
+      //makeRoutine(map, creatureCoordinate);
       return;
 //      }
     }
@@ -71,7 +71,7 @@ public final class MoveUtility {
 //      return;
 //    }
     changeCell(map, creatureCoordinate, followCoordinate);
-    makeRoutine(map, followCoordinate);
+    //makeRoutine(map, followCoordinate);
   }
 
   private static void changeCell(GameMap map, Coordination creatureCoordinate,
@@ -80,7 +80,7 @@ public final class MoveUtility {
     map.removeEntityByCoordinate(creatureCoordinate);
   }
 
-  private static void makeRoutine(GameMap map, Coordination creatureCoordinate) {
+  public static void makeRoutine(GameMap map, Coordination creatureCoordinate) {
     Creature creature = map.getEntityByCoordinate(creatureCoordinate, Creature.class).orElseThrow(() -> new EntityNotExistException("Entity doesn't exist"));;
     creature.reproduce(map);
     creature.starve(map);

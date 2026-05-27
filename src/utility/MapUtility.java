@@ -1,13 +1,15 @@
 package utility;
 
 
-import static main.Simulation.EMPTY_SPRITE;
 
 import entity.Coordination;
 import entity.Entity;
 import entity.Herbivore;
 import entity.Predator;
+import entity.SpriteType;
 import entity.staticObject.Grass;
+import entity.staticObject.Rock;
+import entity.staticObject.Tree;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +34,11 @@ public final class MapUtility {
 
 public static Optional<String> getEntitySprite(Entity entity){
   return switch (entity) {
-    case Predator predator -> Optional.of(PREDATOR_SPRITE);
-    case Herbivore herbivore -> Optional.of(HERBIVORE_SPRITE);
-    case Grass grass -> Optional.of(GRASS_SPRITE);
+    case Predator predator -> Optional.of(SpriteType.PREDATOR.getCode());
+    case Herbivore herbivore -> Optional.of(SpriteType.HERBIVORE.getCode());
+    case Grass grass -> Optional.of(SpriteType.GRASS.getCode());
+    case Rock rock -> Optional.of(SpriteType.ROCK.getCode());
+    case Tree tree -> Optional.of(SpriteType.TREE.getCode());
     case null, default -> Optional.empty();
   };
 }

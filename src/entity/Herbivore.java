@@ -2,8 +2,10 @@ package entity;
 
 
 import static actions.InitActions.SPAWNER;
-import static entity.CreatureConfig.CHILD_COST;
-import static entity.CreatureConfig.MIN_HP_FOR_REPRODUCTION;
+import static config.CreatureConfig.CHILD_COST;
+import static config.CreatureConfig.DEFAULT_HERBIVORE_HP;
+import static config.CreatureConfig.DEFAULT_HERBIVORE_SPEED;
+import static config.CreatureConfig.MIN_HP_FOR_REPRODUCTION;
 import static entity.EntityType.HERBIVORE;
 import static utility.MapUtility.VALUE_OF_GRASS;
 import static utility.MapUtility.checkClassType;
@@ -17,7 +19,7 @@ public class Herbivore extends Creature {
 
   // create default herbivore
   public Herbivore() {
-    super();
+    super(DEFAULT_HERBIVORE_HP, DEFAULT_HERBIVORE_SPEED);
   }
 
   // create custom herbivore

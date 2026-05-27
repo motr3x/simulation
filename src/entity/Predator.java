@@ -1,9 +1,11 @@
 package entity;
 
 import static actions.InitActions.SPAWNER;
-import static entity.CreatureConfig.CHILD_COST;
-import static entity.CreatureConfig.DEFAULT_CREATURE_POWER;
-import static entity.CreatureConfig.MIN_HP_FOR_REPRODUCTION;
+import static config.CreatureConfig.CHILD_COST;
+import static config.CreatureConfig.DEFAULT_CREATURE_POWER;
+import static config.CreatureConfig.DEFAULT_PREDATOR_HP;
+import static config.CreatureConfig.DEFAULT_PREDATOR_SPEED;
+import static config.CreatureConfig.MIN_HP_FOR_REPRODUCTION;
 import static entity.EntityType.PREDATOR;
 import static utility.MapUtility.VALUE_OF_HERBIVORE;
 import static utility.MapUtility.checkClassType;
@@ -18,7 +20,7 @@ public class Predator extends Creature {
 
   // create default predator
   public Predator() {
-    super();
+    super(DEFAULT_PREDATOR_HP, DEFAULT_PREDATOR_SPEED);
   }
 
   // create custom predator

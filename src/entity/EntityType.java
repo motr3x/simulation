@@ -3,5 +3,7 @@ package entity;
 public enum EntityType {
   PREDATOR,
   HERBIVORE,
-  GRASS;
+  GRASS,
+  TREE,
+  ROCK;
 }

@@ -3,6 +3,11 @@ package main;
 import static actions.TurnAction.HERBIVORE_PLACE;
 import static actions.TurnAction.PREDATORS_PLACE;
 import static actions.TurnAction.makeMoveForEverybody;
+import static config.SimulationConfig.MAX_X_COORDINATE;
+import static config.SimulationConfig.MAX_Y_COORDINATE;
+import static config.SimulationConfig.MIN_X_COORDINATE;
+import static config.SimulationConfig.MIN_Y_COORDINATE;
+import static config.SimulationConfig.PENULTIMATE_Y_COORDINATE;
 import static utility.MapUtility.getEntitySprite;
 import static utility.MapUtility.getInfoByCreaturesCoordinates;
 import static utility.OtherUtility.clearScreen;
@@ -10,6 +15,7 @@ import static utility.OtherUtility.clearScreen;
 import entity.Coordination;
 import entity.Creature;
 import entity.Entity;
+import entity.SpriteType;
 import exception.EntityNotExistException;
 import java.util.ArrayDeque;
 import java.util.List;
@@ -19,14 +25,9 @@ import java.util.Queue;
 
 public final class Simulation {
 
+
   private final GameMap gameMap;
   private final Graph graph;
-  public static final int MAX_X_COORDINATE = 10;
-  public static final int MIN_X_COORDINATE = 1;
-  public static final int MAX_Y_COORDINATE = 10;
-  public static final int MIN_Y_COORDINATE = 1;
-  public static final int PENULTIMATE_Y_COORDINATE = MAX_Y_COORDINATE - 1;
-  public static final String EMPTY_SPRITE = "\uD83D\uDDFE";
 
   public Simulation(GameMap gameMap, Graph graph) {
     this.gameMap = gameMap;
@@ -45,26 +46,6 @@ public final class Simulation {
 
   }
 
-  private void renderField(GameMap map) {
-    for (int yCoordinate = MAX_Y_COORDINATE; yCoordinate >= MIN_Y_COORDINATE; yCoordinate--) {
-      for (int xCoordinate = MIN_X_COORDINATE; xCoordinate <= MAX_X_COORDINATE; xCoordinate++) {
-        Optional<String> sprite = Optional.empty();
-        // Получаем сущность, может быть нулем
-        Optional<Entity> entity = map.getEntityByCoordinate(
-            new Coordination(xCoordinate, yCoordinate), Entity.class);
-        if (entity.isPresent()) {
-          sprite = getEntitySprite(entity.get());
-        }
-        System.out.print(sprite.orElse(EMPTY_SPRITE));
-
-        printInfoBar(map, xCoordinate, yCoordinate);
-      }
-      System.out.println();
-    }
-    System.out.println();
-  }
-
-
   //Просимулировать и отрендерить один ход
   public void nextTurn() {
     renderField(gameMap);
@@ -78,6 +59,25 @@ public final class Simulation {
     clearScreen();
   }
 
+
+  private void renderField(GameMap map) {
+    for (int yCoordinate = MAX_Y_COORDINATE; yCoordinate >= MIN_Y_COORDINATE; yCoordinate--) {
+      for (int xCoordinate = MIN_X_COORDINATE; xCoordinate <= MAX_X_COORDINATE; xCoordinate++) {
+        Optional<String> sprite = Optional.empty();
+        // Получаем сущность, может быть нулем
+        Optional<Entity> entity = map.getEntityByCoordinate(
+            new Coordination(xCoordinate, yCoordinate), Entity.class);
+        if (entity.isPresent()) {
+          sprite = getEntitySprite(entity.get());
+        }
+        System.out.print(sprite.orElse(SpriteType.EMPTY.getCode()));
+
+        printInfoBar(map, xCoordinate, yCoordinate);
+      }
+      System.out.println();
+    }
+    System.out.println();
+  }
 
   private void printInfoBar(GameMap map, int xCoordinate, int yCoordinate) {
     // GET INFO BY CREATURES COORDINATES

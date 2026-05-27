@@ -1,10 +1,11 @@
 package entity;
 
-import static entity.CreatureConfig.DEFAULT_CREATURE_HP;
-import static entity.CreatureConfig.DEFAULT_CREATURE_SPEED;
-import static entity.CreatureConfig.HUNGRY_DAMAGE;
-import static entity.CreatureConfig.MIN_CREATURE_HP;
+import static config.CreatureConfig.DEFAULT_CREATURE_HP;
+import static config.CreatureConfig.DEFAULT_CREATURE_SPEED;
+import static config.CreatureConfig.HUNGRY_DAMAGE;
+import static config.CreatureConfig.MIN_CREATURE_HP;
 import static utility.MoveUtility.chooseNextCell;
+import static utility.MoveUtility.makeRoutine;
 
 import exception.EntityNotExistException;
 import main.GameMap;
@@ -21,7 +22,7 @@ public abstract class Creature extends Entity {
     this(DEFAULT_CREATURE_HP, DEFAULT_CREATURE_SPEED);
   }
 
-  // create custom creature
+  // create default creature
   public Creature(int hp, int speed) {
     this.hp = hp;
     this.speed = speed;
@@ -42,7 +43,12 @@ public abstract class Creature extends Entity {
   public void makeMove(GameMap map, Graph graph) {
     Coordination creatureCoordinate = map.getCoordinateByEntity(this)
         .orElseThrow(() -> new EntityNotExistException("Entity doesn't exist"));
-    chooseNextCell(map, graph, creatureCoordinate);
+    for(int i = 0; i < getSpeed(); i++) {
+      chooseNextCell(map, graph, creatureCoordinate);
+      creatureCoordinate = map.getCoordinateByEntity(this)
+          .orElseThrow(() -> new EntityNotExistException("Entity doesn't exist"));
+    }
+    makeRoutine(map, creatureCoordinate);
   }
 
   public void starve(GameMap map) {

@@ -20,7 +20,7 @@ public final class TurnAction {
   public static final int PREDATORS_PLACE = 1;
   public static final int HERBIVORE_PLACE = 0;
   private static final int GRASS_PLACE = 2;
-  private static final int MIN_COUNT_OF_GRASS = 20;
+  private static final int MIN_COUNT_OF_GRASS = 7;
 
   //передвижение всех существ
   public static void makeMoveForEverybody(GameMap gameMap, Graph graph) {
@@ -49,7 +49,7 @@ public final class TurnAction {
   }
 
   private static boolean isGrassCountEnough(Queue<Coordination> grassCoordinates) {
-    return (grassCoordinates.size() == MIN_COUNT_OF_GRASS);
+    return (grassCoordinates.size() >= MIN_COUNT_OF_GRASS);
   }
 }
 

@@ -1,9 +1,8 @@
 package utility;
-
-import static main.Simulation.MAX_X_COORDINATE;
-import static main.Simulation.MAX_Y_COORDINATE;
-import static main.Simulation.MIN_X_COORDINATE;
-import static main.Simulation.MIN_Y_COORDINATE;
+import static config.SimulationConfig.MAX_X_COORDINATE;
+import static config.SimulationConfig.MAX_Y_COORDINATE;
+import static config.SimulationConfig.MIN_X_COORDINATE;
+import static config.SimulationConfig.MIN_Y_COORDINATE;
 import static utility.MapUtility.fieldIsEmpty;
 
 import entity.Coordination;

@@ -4,10 +4,17 @@ package actions;
 import static entity.EntityType.GRASS;
 import static entity.EntityType.HERBIVORE;
 import static entity.EntityType.PREDATOR;
-import static main.Simulation.MAX_X_COORDINATE;
-import static main.Simulation.MAX_Y_COORDINATE;
-import static main.Simulation.MIN_X_COORDINATE;
-import static main.Simulation.MIN_Y_COORDINATE;
+import static entity.EntityType.ROCK;
+import static entity.EntityType.TREE;
+import static config.SimulationConfig.MAX_X_COORDINATE;
+import static config.SimulationConfig.MAX_Y_COORDINATE;
+import static config.SimulationConfig.MIN_INIT_COUNT_OF_GRASS;
+import static config.SimulationConfig.MIN_INIT_COUNT_OF_HERBIVORE;
+import static config.SimulationConfig.MIN_INIT_COUNT_OF_PREDATOR;
+import static config.SimulationConfig.MIN_INIT_COUNT_OF_ROCK;
+import static config.SimulationConfig.MIN_INIT_COUNT_OF_TREE;
+import static config.SimulationConfig.MIN_X_COORDINATE;
+import static config.SimulationConfig.MIN_Y_COORDINATE;
 
 import entity.Coordination;
 import java.util.List;
@@ -21,11 +28,9 @@ public final class InitActions {
 
   public static final EntitySpawner SPAWNER = new EntitySpawner();
 
-  private static final int MIN_INIT_COUNT_OF_HERBIVORE = 2;
-  private static final int MIN_INIT_COUNT_OF_PREDATOR = 2;
-  private static final int MIN_INIT_COUNT_OF_GRASS = 10;
-
   public static void initMap(GameMap map) {
+    initDefaultRock(map);
+    initDefaultTree(map);
     initStartGrass(map);
     initStartPredator(map);
     initStartHerbivore(map);
@@ -101,6 +106,22 @@ public final class InitActions {
                 new Coordination(xCoordinate, yCoordinate - 1),
                 new Coordination(xCoordinate - 1, yCoordinate)));
       }
+    }
+  }
+
+  private static void initDefaultTree(GameMap map) {
+    int countOfTree = 0;
+    while (countOfTree < MIN_INIT_COUNT_OF_TREE) {
+      SPAWNER.spawnToMap(map, TREE);
+      countOfTree++;
+    }
+  }
+
+  private static void initDefaultRock(GameMap map) {
+    int countOfRock = 0;
+    while (countOfRock < MIN_INIT_COUNT_OF_ROCK) {
+      SPAWNER.spawnToMap(map, ROCK);
+      countOfRock++;
     }
   }
 
