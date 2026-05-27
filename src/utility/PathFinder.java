@@ -2,6 +2,9 @@ package utility;
 
 import entity.Coordination;
 import entity.Creature;
+import entity.Entity;
+import entity.Herbivore;
+import entity.staticObject.Grass;
 import exception.EntityNotExistException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -15,13 +18,13 @@ import main.GameMap;
 
 public final class PathFinder {
 
-  private PathFinder(){
+  private PathFinder() {
 
   }
 
   public static Optional<Deque<Coordination>> useBfsAlgorithm(
       Map<Coordination, List<Coordination>> graph,
-      Coordination start, Coordination goal, GameMap map) {
+      Coordination start, GameMap map) {
 
     Set<Coordination> visited = new LinkedHashSet<>();
     Deque<List<Coordination>> queue = new ArrayDeque<>();
@@ -33,7 +36,9 @@ public final class PathFinder {
       queue.removeFirst();// берем путь
       Coordination node = path.getLast();// последний элемент пути
       if (node != start) {
-        Creature creature = map.getEntityByCoordinate(start, Creature.class).orElseThrow(() -> new EntityNotExistException("Entity doesn't exist"));;
+        Creature creature = map.getEntityByCoordinate(start, Creature.class)
+            .orElseThrow(() -> new EntityNotExistException("Entity doesn't exist"));
+        ;
         if (creature.checkBarrier(map, node)) {
           continue;
         }
@@ -43,11 +48,18 @@ public final class PathFinder {
         continue;
       }
 
-      visited.add(node); // добавляем
+      visited.add(node);
 
-      if (node.equals(goal)) {
-        return Optional.of(path);
+      if(path.size() > 1) {
+        Optional<Entity> entity = map.getEntityByCoordinate(node);
+        if (entity.isPresent()) {
+          if (entity.get() instanceof Grass || entity.get() instanceof Herbivore) {
+            path.removeFirst();
+            return Optional.of(path);
+          }
+        }
       }
+
 
       List<Coordination> neighbors = graph.get(node);
       if (neighbors.isEmpty()) {

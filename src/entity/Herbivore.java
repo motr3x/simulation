@@ -6,8 +6,8 @@ import static config.CreatureConfig.CHILD_COST;
 import static config.CreatureConfig.DEFAULT_HERBIVORE_HP;
 import static config.CreatureConfig.DEFAULT_HERBIVORE_SPEED;
 import static config.CreatureConfig.MIN_HP_FOR_REPRODUCTION;
+import static config.SimulationConfig.COST_OF_GRASS;
 import static entity.EntityType.HERBIVORE;
-import static utility.MapUtility.VALUE_OF_GRASS;
 import static utility.MapUtility.checkClassType;
 
 import entity.staticObject.Grass;
@@ -50,7 +50,7 @@ public class Herbivore extends Creature {
 
   @Override
   public void upHp() {
-    setHp(getHp() + VALUE_OF_GRASS);
+    setHp(getHp() + COST_OF_GRASS);
   }
 
   @Override

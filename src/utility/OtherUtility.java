@@ -1,4 +1,5 @@
 package utility;
+
 import static config.SimulationConfig.MAX_X_COORDINATE;
 import static config.SimulationConfig.MAX_Y_COORDINATE;
 import static config.SimulationConfig.MIN_X_COORDINATE;
@@ -11,7 +12,7 @@ import main.GameMap;
 
 public final class OtherUtility {
 
-  private OtherUtility(){
+  private OtherUtility() {
 
   }
 
@@ -25,11 +26,11 @@ public final class OtherUtility {
     int xCoordinate = random.nextInt(MIN_X_COORDINATE, MAX_X_COORDINATE);
     int yCoordinate = random.nextInt(MIN_Y_COORDINATE, MAX_Y_COORDINATE);
     Coordination coordination = new Coordination(xCoordinate, yCoordinate);
-    while (!fieldIsEmpty(coordination, map)){
+    while (!fieldIsEmpty(coordination, map)) {
       xCoordinate = random.nextInt(MIN_X_COORDINATE, MAX_X_COORDINATE);
       yCoordinate = random.nextInt(MIN_Y_COORDINATE, MAX_Y_COORDINATE);
       coordination = new Coordination(xCoordinate, yCoordinate);
-      }
+    }
     return coordination;
   }
 }

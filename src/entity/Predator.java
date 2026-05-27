@@ -6,8 +6,8 @@ import static config.CreatureConfig.DEFAULT_CREATURE_POWER;
 import static config.CreatureConfig.DEFAULT_PREDATOR_HP;
 import static config.CreatureConfig.DEFAULT_PREDATOR_SPEED;
 import static config.CreatureConfig.MIN_HP_FOR_REPRODUCTION;
+import static config.SimulationConfig.COST_OF_HERBIVORE;
 import static entity.EntityType.PREDATOR;
-import static utility.MapUtility.VALUE_OF_HERBIVORE;
 import static utility.MapUtility.checkClassType;
 
 import entity.staticObject.Grass;
@@ -42,7 +42,7 @@ public class Predator extends Creature {
 
   @Override
   public void upHp() {
-    setHp(getHp() + VALUE_OF_HERBIVORE);
+    setHp(getHp() + COST_OF_HERBIVORE);
   }
 
   @Override

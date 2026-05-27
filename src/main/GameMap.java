@@ -17,6 +17,11 @@ public final class GameMap {
     map.put(coordination, entity);
   }
 
+  public void shiftEntity(Coordination oldCoordinate, Coordination newCoordinate, Entity entity){
+    map.put(newCoordinate, entity);
+    map.remove(oldCoordinate);
+  }
+
   public <T extends Entity> Optional<T> getEntityByCoordinate(Coordination coordination,
       Class<T> type) {
     Entity entity = map.get(coordination);
@@ -25,6 +30,7 @@ public final class GameMap {
     }
     return Optional.empty();
   }
+
   public Optional<Entity> getEntityByCoordinate(Coordination coordination) {
     Entity entity = map.get(coordination);
     return Optional.ofNullable(entity);
