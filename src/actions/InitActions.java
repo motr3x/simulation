@@ -25,6 +25,9 @@ import utility.EntitySpawner;
 
 public final class InitActions {
 
+  private InitActions() {
+  }
+
   public static final EntitySpawner SPAWNER = new EntitySpawner();
 
   public static void initMap(GameMap map) {

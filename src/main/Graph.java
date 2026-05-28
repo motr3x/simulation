@@ -9,8 +9,8 @@ public final class Graph {
 
   private final Map<Coordination, List<Coordination>> graph = new HashMap<>();
 
-  public void set(Coordination coordination, List<Coordination> coordinations) {
-    graph.put(coordination, coordinations);
+  public void set(Coordination coordination, List<Coordination> coordinates) {
+    graph.put(coordination, coordinates);
   }
 
   public Map<Coordination, List<Coordination>> get() {

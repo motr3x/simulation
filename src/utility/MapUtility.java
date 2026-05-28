@@ -23,17 +23,6 @@ public final class MapUtility {
 
   }
 
-  public static Optional<String> getEntitySprite(Entity entity) {
-    return switch (entity) {
-      case Predator predator -> Optional.of(SpriteType.PREDATOR.getCode());
-      case Herbivore herbivore -> Optional.of(SpriteType.HERBIVORE.getCode());
-      case Grass grass -> Optional.of(SpriteType.GRASS.getCode());
-      case Rock rock -> Optional.of(SpriteType.ROCK.getCode());
-      case Tree tree -> Optional.of(SpriteType.TREE.getCode());
-      case null, default -> Optional.empty();
-    };
-  }
-
   public static <T> boolean checkClassType(GameMap map, Coordination coordination, Class<T> type) {
     boolean emptyCell = false;
     Optional<Entity> entity = map.get(coordination, Entity.class);
@@ -44,31 +33,5 @@ public final class MapUtility {
     return map.get(coordination, Entity.class).isEmpty();
   }
 
-  public static List<Queue<Coordination>> getInfoByCreaturesCoordinates(GameMap map) {
-
-    Queue<Coordination> herbivoreCoordinates = new ArrayDeque<>();
-    Queue<Coordination> predatorCoordinates = new ArrayDeque<>();
-    Queue<Coordination> grassCoordinates = new ArrayDeque<>();
-
-    for (Map.Entry<Coordination, Entity> element : map.getEntrySet()) {
-      if (element.getValue() instanceof Herbivore) {
-        herbivoreCoordinates.add(element.getKey());
-        continue;
-      }
-      if (element.getValue() instanceof Predator) {
-        predatorCoordinates.add(element.getKey());
-        continue;
-      }
-      if (element.getValue() instanceof Grass) {
-        grassCoordinates.add(element.getKey());
-        continue;
-      }
-    }
-
-    List<Queue<Coordination>> separateEntityCoordinates = new ArrayList<>(
-        List.of(herbivoreCoordinates, predatorCoordinates, grassCoordinates));
-
-    return separateEntityCoordinates;
-  }
 
 }

@@ -1,24 +1,25 @@
 package main;
 
-import static actions.TurnAction.HERBIVORE_PLACE;
-import static actions.TurnAction.PREDATORS_PLACE;
+import static actions.InitActions.initGraph;
+import static actions.InitActions.initMap;
 import static actions.TurnAction.makeMoveForEverybody;
 import static config.SimulationConfig.MAX_X_COORDINATE;
 import static config.SimulationConfig.MAX_Y_COORDINATE;
 import static config.SimulationConfig.MIN_X_COORDINATE;
 import static config.SimulationConfig.MIN_Y_COORDINATE;
 import static config.SimulationConfig.PENULTIMATE_Y_COORDINATE;
-import static utility.MapUtility.getEntitySprite;
-import static utility.MapUtility.getInfoByCreaturesCoordinates;
 import static utility.OtherUtility.clearScreen;
 
 import entity.Coordination;
 import entity.Creature;
 import entity.Entity;
+import entity.Herbivore;
+import entity.Predator;
 import entity.SpriteType;
+import entity.staticObject.Grass;
+import entity.staticObject.Rock;
+import entity.staticObject.Tree;
 import exception.EntityNotExistException;
-import java.util.ArrayDeque;
-import java.util.List;
 import java.util.Optional;
 import java.util.Queue;
 
@@ -28,16 +29,21 @@ public final class Simulation {
 
   private final GameMap gameMap;
   private final Graph graph;
+  private int roundCount = 0;
 
   public Simulation(GameMap gameMap, Graph graph) {
     this.gameMap = gameMap;
     this.graph = graph;
+    initMap(gameMap);
+    initGraph(graph);
   }
 
   // Запустить бесконечный цикл симуляции и рендеринга
   public void startSimulation() {
+    renderField(gameMap);
     while (true) {
       nextTurn();
+      ++roundCount;
     }
   }
 
@@ -79,10 +85,20 @@ public final class Simulation {
     System.out.println();
   }
 
+  private Optional<String> getEntitySprite(Entity entity) {
+    return switch (entity) {
+      case Predator predator -> Optional.of(SpriteType.PREDATOR.getCode());
+      case Herbivore herbivore -> Optional.of(SpriteType.HERBIVORE.getCode());
+      case Grass grass -> Optional.of(SpriteType.GRASS.getCode());
+      case Rock rock -> Optional.of(SpriteType.ROCK.getCode());
+      case Tree tree -> Optional.of(SpriteType.TREE.getCode());
+      case null, default -> Optional.empty();
+    };
+  }
+
   private void printInfoBar(GameMap map, int xCoordinate, int yCoordinate) {
-    List<Queue<Coordination>> array = getInfoByCreaturesCoordinates(map);
-    Queue<Coordination> herbivoreCoordinates = new ArrayDeque<>(array.get(HERBIVORE_PLACE));
-    Queue<Coordination> predatorCoordinates = new ArrayDeque<>(array.get(PREDATORS_PLACE));
+    Queue<Coordination> predatorCoordinates = gameMap.getPositions(gameMap, Predator.class);
+    Queue<Coordination> herbivoreCoordinates = gameMap.getPositions(gameMap, Herbivore.class);
 
     printInfoByCreatures(map, herbivoreCoordinates, isTopCoordinate(xCoordinate, yCoordinate));
 

@@ -8,7 +8,7 @@ import entity.staticObject.Grass;
 import entity.staticObject.Rock;
 import entity.staticObject.Tree;
 
-public class EntityFactory {
+public final class EntityFactory {
   public Entity create(EntityType entityType){
     return switch (entityType){
       case PREDATOR -> new Predator();
