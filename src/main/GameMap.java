@@ -2,6 +2,7 @@ package main;
 
 import entity.Coordination;
 import entity.Entity;
+import exception.EntityNotExistException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -13,16 +14,16 @@ public final class GameMap {
 
   private final Map<Coordination, Entity> map = new LinkedHashMap<>();
 
-  public void setMap(Coordination coordination, Entity entity) {
+  public void set(Coordination coordination, Entity entity) {
     map.put(coordination, entity);
   }
 
-  public void shiftEntity(Coordination oldCoordinate, Coordination newCoordinate, Entity entity){
+  public void shift(Coordination oldCoordinate, Coordination newCoordinate, Entity entity){
     map.put(newCoordinate, entity);
     map.remove(oldCoordinate);
   }
 
-  public <T extends Entity> Optional<T> getEntityByCoordinate(Coordination coordination,
+  public <T extends Entity> Optional<T> get(Coordination coordination,
       Class<T> type) {
     Entity entity = map.get(coordination);
     if (type.isInstance(entity)) {
@@ -31,12 +32,19 @@ public final class GameMap {
     return Optional.empty();
   }
 
-  public Optional<Entity> getEntityByCoordinate(Coordination coordination) {
+  public Optional<Entity> get(Coordination coordination) {
     Entity entity = map.get(coordination);
     return Optional.ofNullable(entity);
   }
 
-  public Optional<Coordination> getCoordinateByEntity(Entity entity) {
+  public void remove(Entity entity) {
+    Coordination coordination = getPosition(entity).orElseThrow(
+        () -> new EntityNotExistException("Entity doesn't exist"));
+    map.remove(coordination);
+  }
+
+
+  public Optional<Coordination> getPosition(Entity entity) {
     for (Map.Entry<Coordination, Entity> entry : map.entrySet()) {
       if (Objects.equals(entity, entry.getValue())) {
         return Optional.of(entry.getKey());
@@ -50,7 +58,7 @@ public final class GameMap {
     return copyOfEntrySet;
   }
 
-  public void removeEntityByCoordinate(Coordination coordination) {
+  public void remove(Coordination coordination) {
     map.remove(coordination);
   }
 }

@@ -56,6 +56,6 @@ public class Herbivore extends Creature {
   @Override
   public void makeAttack(GameMap map, Coordination goalCreature) {
     upHp();
-    map.removeEntityByCoordinate(goalCreature);
+    map.remove(goalCreature);
   }
 }

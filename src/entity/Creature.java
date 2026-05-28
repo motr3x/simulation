@@ -42,25 +42,26 @@ public abstract class Creature extends Entity {
   }
 
   public void makeMove(GameMap map, Graph graph) {
-    Coordination creatureCoordinate = map.getCoordinateByEntity(this).get();
+    Coordination creatureCoordinate = map.getPosition(this).orElseThrow(
+        () -> new EntityNotExistException("Entity doesn't exist"));
     for (int i = 0; i < getSpeed(); i++) {
-      Optional<Deque<Coordination>> track = useBfsAlgorithm(graph.getGraph(), creatureCoordinate,
+      Optional<Deque<Coordination>> track = useBfsAlgorithm(graph.get(), creatureCoordinate,
           map);
       if (track.isPresent()) {
         Coordination followCoordinate = track.get().poll();
         if (isGoal(map, followCoordinate)) {
           makeAttack(map, followCoordinate);
         } else {
-          map.shiftEntity(creatureCoordinate, followCoordinate, this);
+          map.shift(creatureCoordinate, followCoordinate, this);
         }
       }
-      creatureCoordinate = map.getCoordinateByEntity(this).get();
+      creatureCoordinate = map.getPosition(this).orElseThrow(
+          () -> new EntityNotExistException("Entity doesn't exist"));
     }
     reproduce(map);
     starve(map);
   }
 
-  //TODO THROW EXCEPTION IF DON'T MAKE
   public abstract void reproduce(GameMap map);
 
   public abstract void upHp();
@@ -73,9 +74,7 @@ public abstract class Creature extends Entity {
 
   private void starve(GameMap map) {
     if (getHp() == MIN_CREATURE_HP) {
-      Coordination entityCoordinate = map.getCoordinateByEntity(this)
-          .orElseThrow(() -> new EntityNotExistException("Entity doesn't exist"));
-      map.removeEntityByCoordinate(entityCoordinate);
+      map.remove(this);
       return;
     }
     setHp(getHp() - HUNGRY_DAMAGE);

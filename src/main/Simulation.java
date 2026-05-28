@@ -65,7 +65,7 @@ public final class Simulation {
       for (int xCoordinate = MIN_X_COORDINATE; xCoordinate <= MAX_X_COORDINATE; xCoordinate++) {
         Optional<String> sprite = Optional.empty();
         // Получаем сущность, может быть нулем
-        Optional<Entity> entity = map.getEntityByCoordinate(
+        Optional<Entity> entity = map.get(
             new Coordination(xCoordinate, yCoordinate), Entity.class);
         if (entity.isPresent()) {
           sprite = getEntitySprite(entity.get());
@@ -80,15 +80,12 @@ public final class Simulation {
   }
 
   private void printInfoBar(GameMap map, int xCoordinate, int yCoordinate) {
-    // GET INFO BY CREATURES COORDINATES
     List<Queue<Coordination>> array = getInfoByCreaturesCoordinates(map);
     Queue<Coordination> herbivoreCoordinates = new ArrayDeque<>(array.get(HERBIVORE_PLACE));
     Queue<Coordination> predatorCoordinates = new ArrayDeque<>(array.get(PREDATORS_PLACE));
 
-    // Iterate herbivores and prints info
     printInfoByCreatures(map, herbivoreCoordinates, isTopCoordinate(xCoordinate, yCoordinate));
 
-    // Iterate predators and prints info
     printInfoByCreatures(map, predatorCoordinates, isAfterTopCoordinate(xCoordinate, yCoordinate));
 
   }
@@ -97,7 +94,7 @@ public final class Simulation {
       boolean positionFlag) {
     if (positionFlag) {
       while (!creaturesCoordinates.isEmpty()) {
-        Creature creature = map.getEntityByCoordinate(creaturesCoordinates.poll(), Creature.class)
+        Creature creature = map.get(creaturesCoordinates.poll(), Creature.class)
             .orElseThrow(() -> new EntityNotExistException("Entity doesn't exist"));
         Optional<String> sprite = getEntitySprite(creature);
         sprite.ifPresent(s -> System.out.print("[ " + s + " : " + creature.getHp() + " hp ]"));

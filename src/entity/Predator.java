@@ -47,11 +47,11 @@ public class Predator extends Creature {
 
   @Override
   public void makeAttack(GameMap map, Coordination goalCoordinate) {
-    Creature goalCreature = map.getEntityByCoordinate(goalCoordinate, Creature.class)
+    Creature goalCreature = map.get(goalCoordinate, Creature.class)
         .orElseThrow(() -> new EntityNotExistException("Entity doesn't exist"));
     if (isDead(goalCreature)) {
       upHp();
-      map.removeEntityByCoordinate(goalCoordinate);
+      map.remove(goalCoordinate);
       return;
     }
     int herbivoreHp = goalCreature.getHp();

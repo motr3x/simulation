@@ -28,13 +28,13 @@ public final class TurnAction {
     Queue<Coordination> herbivores = getInfoByCreaturesCoordinates(gameMap).get(HERBIVORE_PLACE);
 
     while (!herbivores.isEmpty()) {
-      Creature herbivore = gameMap.getEntityByCoordinate(herbivores.poll(), Herbivore.class)
+      Creature herbivore = gameMap.get(herbivores.poll(), Herbivore.class)
           .orElseThrow(() -> new EntityNotExistException("Entity doesn't exist"));
       herbivore.makeMove(gameMap, graph);
     }
 
     while (!predators.isEmpty()) {
-      Creature predator = gameMap.getEntityByCoordinate(predators.poll(), Predator.class)
+      Creature predator = gameMap.get(predators.poll(), Predator.class)
           .orElseThrow(() -> new EntityNotExistException("Entity doesn't exist"));
       ;
       predator.makeMove(gameMap, graph);

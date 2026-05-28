@@ -15,7 +15,7 @@ public final class EntitySpawner {
   public void spawnToMap(GameMap map, EntityType entityType) {
     Entity entity = FACTORY.create(entityType);
     Coordination coordination = getRandomEmptyCoordinate(map);
-    map.setMap(coordination, entity);
+    map.set(coordination, entity);
   }
 
 }

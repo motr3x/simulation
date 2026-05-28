@@ -23,7 +23,6 @@ import main.Graph;
 import utility.EntitySpawner;
 
 
-// Действия, совершаемые перед стартом симуляции. Пример - расставить объекты и существ на карте
 public final class InitActions {
 
   public static final EntitySpawner SPAWNER = new EntitySpawner();
@@ -41,35 +40,35 @@ public final class InitActions {
       for (int xCoordinate = MIN_X_COORDINATE; xCoordinate <= MAX_X_COORDINATE; xCoordinate++) {
         // right
         if (isLowerLeftCorner(xCoordinate, yCoordinate)) {
-          graph.setGraph(new Coordination(xCoordinate, yCoordinate),
+          graph.set(new Coordination(xCoordinate, yCoordinate),
               List.of(new Coordination(xCoordinate, yCoordinate + 1),
                   new Coordination(xCoordinate + 1, yCoordinate)));
           continue;
         }
         // right
         if (isUpperLeftCorner(xCoordinate, yCoordinate)) {
-          graph.setGraph(new Coordination(xCoordinate, yCoordinate),
+          graph.set(new Coordination(xCoordinate, yCoordinate),
               List.of(new Coordination(xCoordinate, yCoordinate - 1),
                   new Coordination(xCoordinate + 1, yCoordinate)));
           continue;
         }
         // right
         if (isUpperRightCorner(xCoordinate, yCoordinate)) {
-          graph.setGraph(new Coordination(xCoordinate, yCoordinate),
+          graph.set(new Coordination(xCoordinate, yCoordinate),
               List.of(new Coordination(xCoordinate - 1, yCoordinate),
                   new Coordination(xCoordinate, yCoordinate - 1)));
           continue;
         }
         // right
         if (isLowerRightCorner(xCoordinate, yCoordinate)) {
-          graph.setGraph(new Coordination(xCoordinate, yCoordinate),
+          graph.set(new Coordination(xCoordinate, yCoordinate),
               List.of(new Coordination(xCoordinate - 1, yCoordinate),
                   new Coordination(xCoordinate, yCoordinate + 1)));
           continue;
         }
         // right
         if (isLeftSide(xCoordinate, yCoordinate)) {
-          graph.setGraph(new Coordination(xCoordinate, yCoordinate),
+          graph.set(new Coordination(xCoordinate, yCoordinate),
               List.of(new Coordination(xCoordinate, yCoordinate - 1),
                   new Coordination(xCoordinate + 1, yCoordinate),
                   new Coordination(xCoordinate, yCoordinate + 1)));
@@ -77,7 +76,7 @@ public final class InitActions {
         }
         // right
         if (isAbove(xCoordinate, yCoordinate)) {
-          graph.setGraph(new Coordination(xCoordinate, yCoordinate),
+          graph.set(new Coordination(xCoordinate, yCoordinate),
               List.of(new Coordination(xCoordinate - 1, yCoordinate),
                   new Coordination(xCoordinate, yCoordinate - 1),
                   new Coordination(xCoordinate + 1, yCoordinate)));
@@ -85,7 +84,7 @@ public final class InitActions {
         }
         // right
         if (isBottom(xCoordinate, yCoordinate)) {
-          graph.setGraph(new Coordination(xCoordinate, yCoordinate),
+          graph.set(new Coordination(xCoordinate, yCoordinate),
               List.of(new Coordination(xCoordinate - 1, yCoordinate),
                   new Coordination(xCoordinate, yCoordinate + 1),
                   new Coordination(xCoordinate + 1, yCoordinate)));
@@ -93,14 +92,14 @@ public final class InitActions {
         }
         // right
         if (isRightSide(xCoordinate, yCoordinate)) {
-          graph.setGraph(new Coordination(xCoordinate, yCoordinate),
+          graph.set(new Coordination(xCoordinate, yCoordinate),
               List.of(new Coordination(xCoordinate, yCoordinate - 1),
                   new Coordination(xCoordinate, yCoordinate + 1),
                   new Coordination(xCoordinate - 1, yCoordinate)));
           continue;
         }
         // right
-        graph.setGraph(new Coordination(xCoordinate, yCoordinate),
+        graph.set(new Coordination(xCoordinate, yCoordinate),
             List.of(new Coordination(xCoordinate, yCoordinate + 1),
                 new Coordination(xCoordinate + 1, yCoordinate),
                 new Coordination(xCoordinate, yCoordinate - 1),

@@ -33,10 +33,10 @@ public final class PathFinder {
 
     while (!queue.isEmpty()) {
       Deque<Coordination> path = new ArrayDeque<>(queue.getFirst());
-      queue.removeFirst();// берем путь
-      Coordination node = path.getLast();// последний элемент пути
+      queue.removeFirst();
+      Coordination node = path.getLast();
       if (node != start) {
-        Creature creature = map.getEntityByCoordinate(start, Creature.class)
+        Creature creature = map.get(start, Creature.class)
             .orElseThrow(() -> new EntityNotExistException("Entity doesn't exist"));
         ;
         if (creature.checkBarrier(map, node)) {
@@ -50,8 +50,8 @@ public final class PathFinder {
 
       visited.add(node);
 
-      if(path.size() > 1) {
-        Optional<Entity> entity = map.getEntityByCoordinate(node);
+      if(!path.getLast().equals(start)) {
+        Optional<Entity> entity = map.get(node);
         if (entity.isPresent()) {
           if (entity.get() instanceof Grass || entity.get() instanceof Herbivore) {
             path.removeFirst();

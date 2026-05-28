@@ -36,12 +36,12 @@ public final class MapUtility {
 
   public static <T> boolean checkClassType(GameMap map, Coordination coordination, Class<T> type) {
     boolean emptyCell = false;
-    Optional<Entity> entity = map.getEntityByCoordinate(coordination, Entity.class);
+    Optional<Entity> entity = map.get(coordination, Entity.class);
     return entity.map(type::isInstance).orElse(emptyCell);
   }
 
   public static boolean fieldIsEmpty(Coordination coordination, GameMap map) {
-    return map.getEntityByCoordinate(coordination, Entity.class).isEmpty();
+    return map.get(coordination, Entity.class).isEmpty();
   }
 
   public static List<Queue<Coordination>> getInfoByCreaturesCoordinates(GameMap map) {
