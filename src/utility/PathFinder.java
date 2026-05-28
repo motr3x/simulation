@@ -50,7 +50,7 @@ public final class PathFinder {
 
       visited.add(node);
 
-      if(!path.getLast().equals(start)) {
+      if (!path.getLast().equals(start)) {
         Optional<Entity> entity = map.get(node);
         if (entity.isPresent()) {
           if (entity.get() instanceof Grass || entity.get() instanceof Herbivore) {
@@ -59,7 +59,6 @@ public final class PathFinder {
           }
         }
       }
-
 
       List<Coordination> neighbors = graph.get(node);
       if (neighbors.isEmpty()) {

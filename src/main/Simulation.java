@@ -8,7 +8,6 @@ import static config.SimulationConfig.MAX_Y_COORDINATE;
 import static config.SimulationConfig.MIN_X_COORDINATE;
 import static config.SimulationConfig.MIN_Y_COORDINATE;
 import static config.SimulationConfig.PENULTIMATE_Y_COORDINATE;
-import static utility.OtherUtility.clearScreen;
 
 import entity.Coordination;
 import entity.Creature;
@@ -54,6 +53,7 @@ public final class Simulation {
 
   //Просимулировать и отрендерить один ход
   public void nextTurn() {
+    System.out.println("ROUND: " + roundCount);
     renderField(gameMap);
     makeMoveForEverybody(gameMap, graph);
     try {
@@ -65,12 +65,15 @@ public final class Simulation {
     clearScreen();
   }
 
+  private void clearScreen() {
+    System.out.print("\033[H\033[2J");
+    System.out.flush();
+  }
 
   private void renderField(GameMap map) {
     for (int yCoordinate = MAX_Y_COORDINATE; yCoordinate >= MIN_Y_COORDINATE; yCoordinate--) {
       for (int xCoordinate = MIN_X_COORDINATE; xCoordinate <= MAX_X_COORDINATE; xCoordinate++) {
         Optional<String> sprite = Optional.empty();
-        // Получаем сущность, может быть нулем
         Optional<Entity> entity = map.get(
             new Coordination(xCoordinate, yCoordinate), Entity.class);
         if (entity.isPresent()) {

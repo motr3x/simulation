@@ -72,4 +72,8 @@ public final class GameMap {
   public void remove(Coordination coordination) {
     map.remove(coordination);
   }
+
+  public boolean fieldIsEmpty(Coordination coordination) {
+    return this.get(coordination, Entity.class).isEmpty();
+  }
 }

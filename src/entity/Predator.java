@@ -8,7 +8,7 @@ import static config.CreatureConfig.DEFAULT_PREDATOR_SPEED;
 import static config.CreatureConfig.MIN_HP_FOR_REPRODUCTION;
 import static config.SimulationConfig.COST_OF_HERBIVORE;
 import static entity.EntityType.PREDATOR;
-import static utility.MapUtility.checkClassType;
+import static utility.Helper.checkClassType;
 
 import entity.staticObject.Grass;
 import entity.staticObject.Rock;

@@ -1,20 +1,20 @@
 package actions;
 
 
+import static config.SimulationConfig.INIT_COUNT_OF_GRASS;
+import static config.SimulationConfig.INIT_COUNT_OF_HERBIVORE;
+import static config.SimulationConfig.INIT_COUNT_OF_PREDATOR;
+import static config.SimulationConfig.INIT_COUNT_OF_ROCK;
+import static config.SimulationConfig.INIT_COUNT_OF_TREE;
+import static config.SimulationConfig.MAX_X_COORDINATE;
+import static config.SimulationConfig.MAX_Y_COORDINATE;
+import static config.SimulationConfig.MIN_X_COORDINATE;
+import static config.SimulationConfig.MIN_Y_COORDINATE;
 import static entity.EntityType.GRASS;
 import static entity.EntityType.HERBIVORE;
 import static entity.EntityType.PREDATOR;
 import static entity.EntityType.ROCK;
 import static entity.EntityType.TREE;
-import static config.SimulationConfig.MAX_X_COORDINATE;
-import static config.SimulationConfig.MAX_Y_COORDINATE;
-import static config.SimulationConfig.MIN_INIT_COUNT_OF_GRASS;
-import static config.SimulationConfig.MIN_INIT_COUNT_OF_HERBIVORE;
-import static config.SimulationConfig.MIN_INIT_COUNT_OF_PREDATOR;
-import static config.SimulationConfig.MIN_INIT_COUNT_OF_ROCK;
-import static config.SimulationConfig.MIN_INIT_COUNT_OF_TREE;
-import static config.SimulationConfig.MIN_X_COORDINATE;
-import static config.SimulationConfig.MIN_Y_COORDINATE;
 
 import entity.Coordination;
 import java.util.List;
@@ -113,7 +113,7 @@ public final class InitActions {
 
   private static void initDefaultTree(GameMap map) {
     int countOfTree = 0;
-    while (countOfTree < MIN_INIT_COUNT_OF_TREE) {
+    while (countOfTree < INIT_COUNT_OF_TREE) {
       SPAWNER.spawnToMap(map, TREE);
       countOfTree++;
     }
@@ -121,7 +121,7 @@ public final class InitActions {
 
   private static void initDefaultRock(GameMap map) {
     int countOfRock = 0;
-    while (countOfRock < MIN_INIT_COUNT_OF_ROCK) {
+    while (countOfRock < INIT_COUNT_OF_ROCK) {
       SPAWNER.spawnToMap(map, ROCK);
       countOfRock++;
     }
@@ -129,7 +129,7 @@ public final class InitActions {
 
   private static void initStartGrass(GameMap map) {
     int countOfGrass = 0;
-    while (countOfGrass < MIN_INIT_COUNT_OF_GRASS) {
+    while (countOfGrass < INIT_COUNT_OF_GRASS) {
       SPAWNER.spawnToMap(map, GRASS);
       countOfGrass++;
     }
@@ -137,7 +137,7 @@ public final class InitActions {
 
   private static void initStartPredator(GameMap map) {
     int countOfPredator = 0;
-    while (countOfPredator < MIN_INIT_COUNT_OF_PREDATOR) {
+    while (countOfPredator < INIT_COUNT_OF_PREDATOR) {
       SPAWNER.spawnToMap(map, PREDATOR);
       countOfPredator++;
     }
@@ -145,7 +145,7 @@ public final class InitActions {
 
   private static void initStartHerbivore(GameMap map) {
     int countOfHerbivore = 0;
-    while (countOfHerbivore < MIN_INIT_COUNT_OF_HERBIVORE) {
+    while (countOfHerbivore < INIT_COUNT_OF_HERBIVORE) {
       SPAWNER.spawnToMap(map, HERBIVORE);
       countOfHerbivore++;
     }

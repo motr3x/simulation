@@ -1,6 +1,6 @@
 package utility;
 
-import static utility.OtherUtility.getRandomEmptyCoordinate;
+import static utility.Helper.getRandomEmptyPosition;
 
 import entity.Coordination;
 import entity.Entity;
@@ -14,7 +14,7 @@ public final class EntitySpawner {
 
   public void spawnToMap(GameMap map, EntityType entityType) {
     Entity entity = FACTORY.create(entityType);
-    Coordination coordination = getRandomEmptyCoordinate(map);
+    Coordination coordination = getRandomEmptyPosition(map);
     map.set(coordination, entity);
   }
 

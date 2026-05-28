@@ -35,9 +35,9 @@ public final class TurnAction {
     while (!predatorCoordinates.isEmpty()) {
       Creature predator = gameMap.get(predatorCoordinates.poll(), Predator.class)
           .orElseThrow(() -> new EntityNotExistException("Entity doesn't exist"));
-      ;
       predator.makeMove(gameMap, graph);
     }
+
     createMissingGrass(gameMap.getPositions(gameMap, Grass.class), gameMap);
   }
 
