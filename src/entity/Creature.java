@@ -45,8 +45,7 @@ public abstract class Creature extends Entity {
     Coordination creatureCoordinate = gameMap.getPosition(this).orElseThrow(
         () -> new EntityNotExistException("Entity doesn't exist"));
     for (int i = 0; i < getSpeed(); i++) {
-      Optional<Deque<Coordination>> track = useBfsAlgorithm(graph.get(), creatureCoordinate,
-          gameMap);
+      Optional<Deque<Coordination>> track = useBfsAlgorithm(gameMap, graph.get(), creatureCoordinate);
       if (track.isPresent()) {
         Coordination followCoordinate = track.get().poll();
         if (isGoal(gameMap, followCoordinate)) {

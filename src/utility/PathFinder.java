@@ -22,9 +22,8 @@ public final class PathFinder {
 
   }
 
-  public static Optional<Deque<Coordination>> useBfsAlgorithm(
-      Map<Coordination, List<Coordination>> graph,
-      Coordination start, GameMap gameMap) {
+  public static Optional<Deque<Coordination>> useBfsAlgorithm(GameMap gameMap,
+      Map<Coordination, List<Coordination>> graph, Coordination start) {
 
     Set<Coordination> visited = new LinkedHashSet<>();
     Deque<List<Coordination>> queue = new ArrayDeque<>();
