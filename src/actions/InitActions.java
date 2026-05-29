@@ -30,46 +30,46 @@ public final class InitActions {
 
   public static final EntitySpawner SPAWNER = new EntitySpawner();
 
-  public static void initMap(GameMap map) {
-    initDefaultRock(map);
-    initDefaultTree(map);
-    initStartGrass(map);
-    initStartPredator(map);
-    initStartHerbivore(map);
+  public static void initMap(GameMap gameMap) {
+    initDefaultRock(gameMap);
+    initDefaultTree(gameMap);
+    initStartGrass(gameMap);
+    initStartPredator(gameMap);
+    initStartHerbivore(gameMap);
   }
 
   public static void initGraph(Graph graph) {
     for (int yCoordinate = MAX_Y_COORDINATE; yCoordinate >= MIN_Y_COORDINATE; yCoordinate--) {
       for (int xCoordinate = MIN_X_COORDINATE; xCoordinate <= MAX_X_COORDINATE; xCoordinate++) {
-        // right
+        
         if (isLowerLeftCorner(xCoordinate, yCoordinate)) {
           graph.set(new Coordination(xCoordinate, yCoordinate),
               List.of(new Coordination(xCoordinate, yCoordinate + 1),
                   new Coordination(xCoordinate + 1, yCoordinate)));
           continue;
         }
-        // right
+       
         if (isUpperLeftCorner(xCoordinate, yCoordinate)) {
           graph.set(new Coordination(xCoordinate, yCoordinate),
               List.of(new Coordination(xCoordinate, yCoordinate - 1),
                   new Coordination(xCoordinate + 1, yCoordinate)));
           continue;
         }
-        // right
+     
         if (isUpperRightCorner(xCoordinate, yCoordinate)) {
           graph.set(new Coordination(xCoordinate, yCoordinate),
               List.of(new Coordination(xCoordinate - 1, yCoordinate),
                   new Coordination(xCoordinate, yCoordinate - 1)));
           continue;
         }
-        // right
+     
         if (isLowerRightCorner(xCoordinate, yCoordinate)) {
           graph.set(new Coordination(xCoordinate, yCoordinate),
               List.of(new Coordination(xCoordinate - 1, yCoordinate),
                   new Coordination(xCoordinate, yCoordinate + 1)));
           continue;
         }
-        // right
+        
         if (isLeftSide(xCoordinate, yCoordinate)) {
           graph.set(new Coordination(xCoordinate, yCoordinate),
               List.of(new Coordination(xCoordinate, yCoordinate - 1),
@@ -77,23 +77,23 @@ public final class InitActions {
                   new Coordination(xCoordinate, yCoordinate + 1)));
           continue;
         }
-        // right
-        if (isAbove(xCoordinate, yCoordinate)) {
+        
+        if (isAboveSide(xCoordinate, yCoordinate)) {
           graph.set(new Coordination(xCoordinate, yCoordinate),
               List.of(new Coordination(xCoordinate - 1, yCoordinate),
                   new Coordination(xCoordinate, yCoordinate - 1),
                   new Coordination(xCoordinate + 1, yCoordinate)));
           continue;
         }
-        // right
-        if (isBottom(xCoordinate, yCoordinate)) {
+        
+        if (isBottomSide(xCoordinate, yCoordinate)) {
           graph.set(new Coordination(xCoordinate, yCoordinate),
               List.of(new Coordination(xCoordinate - 1, yCoordinate),
                   new Coordination(xCoordinate, yCoordinate + 1),
                   new Coordination(xCoordinate + 1, yCoordinate)));
           continue;
         }
-        // right
+        
         if (isRightSide(xCoordinate, yCoordinate)) {
           graph.set(new Coordination(xCoordinate, yCoordinate),
               List.of(new Coordination(xCoordinate, yCoordinate - 1),
@@ -101,7 +101,7 @@ public final class InitActions {
                   new Coordination(xCoordinate - 1, yCoordinate)));
           continue;
         }
-        // right
+        
         graph.set(new Coordination(xCoordinate, yCoordinate),
             List.of(new Coordination(xCoordinate, yCoordinate + 1),
                 new Coordination(xCoordinate + 1, yCoordinate),
@@ -111,42 +111,42 @@ public final class InitActions {
     }
   }
 
-  private static void initDefaultTree(GameMap map) {
+  private static void initDefaultTree(GameMap gameMap) {
     int countOfTree = 0;
     while (countOfTree < INIT_COUNT_OF_TREE) {
-      SPAWNER.spawnToMap(map, TREE);
+      SPAWNER.spawnToMap(gameMap, TREE);
       countOfTree++;
     }
   }
 
-  private static void initDefaultRock(GameMap map) {
+  private static void initDefaultRock(GameMap gameMap) {
     int countOfRock = 0;
     while (countOfRock < INIT_COUNT_OF_ROCK) {
-      SPAWNER.spawnToMap(map, ROCK);
+      SPAWNER.spawnToMap(gameMap, ROCK);
       countOfRock++;
     }
   }
 
-  private static void initStartGrass(GameMap map) {
+  private static void initStartGrass(GameMap gameMap) {
     int countOfGrass = 0;
     while (countOfGrass < INIT_COUNT_OF_GRASS) {
-      SPAWNER.spawnToMap(map, GRASS);
+      SPAWNER.spawnToMap(gameMap, GRASS);
       countOfGrass++;
     }
   }
 
-  private static void initStartPredator(GameMap map) {
+  private static void initStartPredator(GameMap gameMap) {
     int countOfPredator = 0;
     while (countOfPredator < INIT_COUNT_OF_PREDATOR) {
-      SPAWNER.spawnToMap(map, PREDATOR);
+      SPAWNER.spawnToMap(gameMap, PREDATOR);
       countOfPredator++;
     }
   }
 
-  private static void initStartHerbivore(GameMap map) {
+  private static void initStartHerbivore(GameMap gameMap) {
     int countOfHerbivore = 0;
     while (countOfHerbivore < INIT_COUNT_OF_HERBIVORE) {
-      SPAWNER.spawnToMap(map, HERBIVORE);
+      SPAWNER.spawnToMap(gameMap, HERBIVORE);
       countOfHerbivore++;
     }
   }
@@ -156,12 +156,12 @@ public final class InitActions {
         == MAX_X_COORDINATE));
   }
 
-  private static boolean isBottom(int xCoordinate, int yCoordinate) {
+  private static boolean isBottomSide(int xCoordinate, int yCoordinate) {
     return (((xCoordinate > MIN_X_COORDINATE) && (xCoordinate < MAX_X_COORDINATE)) && (yCoordinate
         == MIN_Y_COORDINATE));
   }
 
-  private static boolean isAbove(int xCoordinate, int yCoordinate) {
+  private static boolean isAboveSide(int xCoordinate, int yCoordinate) {
     return (((xCoordinate > MIN_X_COORDINATE) && (xCoordinate < MAX_X_COORDINATE)) && (yCoordinate
         == MAX_Y_COORDINATE));
   }

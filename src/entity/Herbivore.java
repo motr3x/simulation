@@ -17,35 +17,20 @@ import main.GameMap;
 
 public class Herbivore extends Creature {
 
-  // create default herbivore
   public Herbivore() {
     super(DEFAULT_HERBIVORE_HP, DEFAULT_HERBIVORE_SPEED);
   }
 
-  // create custom herbivore
   public Herbivore(int hp, int speed) {
     super(hp, speed);
   }
 
   @Override
-  public void reproduce(GameMap map) {
+  public void reproduce(GameMap gameMap) {
     if (getHp() > MIN_HP_FOR_REPRODUCTION) {
       setHp(getHp() - CHILD_COST);
-      SPAWNER.spawnToMap(map, HERBIVORE);
+      SPAWNER.spawnToMap(gameMap, HERBIVORE);
     }
-  }
-
-  @Override
-  public boolean checkBarrier(GameMap map, Coordination node) {
-    return (checkClassType(map, node, Rock.class)
-        || checkClassType(map, node, Tree.class)
-        || checkClassType(map, node, Predator.class)
-        || checkClassType(map, node, Herbivore.class));
-  }
-
-  @Override
-  public boolean isGoal(GameMap map, Coordination followCoordinate) {
-    return (checkClassType(map, followCoordinate, Grass.class));
   }
 
   @Override
@@ -54,8 +39,21 @@ public class Herbivore extends Creature {
   }
 
   @Override
-  public void makeAttack(GameMap map, Coordination goalCreature) {
+  public boolean checkBarrier(GameMap gameMap, Coordination followCoordinate) {
+    return (checkClassType(gameMap, followCoordinate, Rock.class)
+        || checkClassType(gameMap, followCoordinate, Tree.class)
+        || checkClassType(gameMap, followCoordinate, Predator.class)
+        || checkClassType(gameMap, followCoordinate, Herbivore.class));
+  }
+
+  @Override
+  public boolean isGoal(GameMap gameMap, Coordination followCoordinate) {
+    return (checkClassType(gameMap, followCoordinate, Grass.class));
+  }
+
+  @Override
+  public void makeAttack(GameMap gameMap, Coordination goalCreature) {
     upHp();
-    map.remove(goalCreature);
+    gameMap.remove(goalCreature);
   }
 }

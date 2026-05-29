@@ -24,7 +24,7 @@ public final class PathFinder {
 
   public static Optional<Deque<Coordination>> useBfsAlgorithm(
       Map<Coordination, List<Coordination>> graph,
-      Coordination start, GameMap map) {
+      Coordination start, GameMap gameMap) {
 
     Set<Coordination> visited = new LinkedHashSet<>();
     Deque<List<Coordination>> queue = new ArrayDeque<>();
@@ -36,10 +36,10 @@ public final class PathFinder {
       queue.removeFirst();
       Coordination node = path.getLast();
       if (node != start) {
-        Creature creature = map.get(start, Creature.class)
+        Creature creature = gameMap.get(start, Creature.class)
             .orElseThrow(() -> new EntityNotExistException("Entity doesn't exist"));
         ;
-        if (creature.checkBarrier(map, node)) {
+        if (creature.checkBarrier(gameMap, node)) {
           continue;
         }
       }
@@ -51,7 +51,7 @@ public final class PathFinder {
       visited.add(node);
 
       if (!path.getLast().equals(start)) {
-        Optional<Entity> entity = map.get(node);
+        Optional<Entity> entity = gameMap.get(node);
         if (entity.isPresent()) {
           if (entity.get() instanceof Grass || entity.get() instanceof Herbivore) {
             path.removeFirst();

@@ -41,42 +41,43 @@ public abstract class Creature extends Entity {
     this.hp = hp;
   }
 
-  public void makeMove(GameMap map, Graph graph) {
-    Coordination creatureCoordinate = map.getPosition(this).orElseThrow(
+  public void makeMove(GameMap gameMap, Graph graph) {
+    Coordination creatureCoordinate = gameMap.getPosition(this).orElseThrow(
         () -> new EntityNotExistException("Entity doesn't exist"));
     for (int i = 0; i < getSpeed(); i++) {
       Optional<Deque<Coordination>> track = useBfsAlgorithm(graph.get(), creatureCoordinate,
-          map);
+          gameMap);
       if (track.isPresent()) {
         Coordination followCoordinate = track.get().poll();
-        if (isGoal(map, followCoordinate)) {
-          makeAttack(map, followCoordinate);
+        if (isGoal(gameMap, followCoordinate)) {
+          makeAttack(gameMap, followCoordinate);
         } else {
-          map.shift(creatureCoordinate, followCoordinate, this);
+          gameMap.shift(creatureCoordinate, followCoordinate, this);
         }
       }
-      creatureCoordinate = map.getPosition(this).orElseThrow(
+      creatureCoordinate = gameMap.getPosition(this).orElseThrow(
           () -> new EntityNotExistException("Entity doesn't exist"));
     }
-    reproduce(map);
-    starve(map);
+    reproduce(gameMap);
+    starve(gameMap);
   }
 
-  public abstract void reproduce(GameMap map);
-
-  public abstract void upHp();
-
-  public abstract void makeAttack(GameMap map, Coordination goalCreature);
-
-  public abstract boolean checkBarrier(GameMap map, Coordination node);
-
-  public abstract boolean isGoal(GameMap map, Coordination followCoordinate);
-
-  private void starve(GameMap map) {
+  private void starve(GameMap gameMap) {
     if (getHp() == MIN_CREATURE_HP) {
-      map.remove(this);
+      gameMap.remove(this);
       return;
     }
     setHp(getHp() - HUNGRY_DAMAGE);
   }
+
+  public abstract void reproduce(GameMap gameMap);
+
+  public abstract void upHp();
+
+  public abstract boolean checkBarrier(GameMap gameMap, Coordination followCoordinate);
+
+  public abstract boolean isGoal(GameMap gameMap, Coordination followCoordinate);
+
+  public abstract void makeAttack(GameMap gameMap, Coordination goalCreature);
+
 }

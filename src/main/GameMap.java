@@ -44,9 +44,9 @@ public final class GameMap {
     return Optional.empty();
   }
 
-  public <T extends Entity> Queue<Coordination> getPositions(GameMap map, Class<T> type) {
+  public <T extends Entity> Queue<Coordination> getPositions(GameMap gameMap, Class<T> type) {
     Queue<Coordination> coordinates = new ArrayDeque<>();
-    for (Map.Entry<Coordination, Entity> element : map.getEntrySet()) {
+    for (Map.Entry<Coordination, Entity> element : gameMap.getEntrySet()) {
       if (type.isInstance(element.getValue())) {
         coordinates.add(element.getKey());
       }
@@ -58,11 +58,6 @@ public final class GameMap {
     map.put(coordination, entity);
   }
 
-  public void shift(Coordination oldCoordinate, Coordination newCoordinate, Entity entity) {
-    map.put(newCoordinate, entity);
-    map.remove(oldCoordinate);
-  }
-
   public void remove(Entity entity) {
     Coordination coordination = getPosition(entity).orElseThrow(
         () -> new EntityNotExistException("Entity doesn't exist"));
@@ -71,6 +66,11 @@ public final class GameMap {
 
   public void remove(Coordination coordination) {
     map.remove(coordination);
+  }
+
+  public void shift(Coordination oldCoordinate, Coordination newCoordinate, Entity entity) {
+    map.put(newCoordinate, entity);
+    map.remove(oldCoordinate);
   }
 
   public boolean fieldIsEmpty(Coordination coordination) {

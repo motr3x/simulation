@@ -17,18 +17,18 @@ public final class Helper {
 
   }
 
-  public static <T> boolean checkClassType(GameMap map, Coordination coordination, Class<T> type) {
+  public static <T> boolean checkClassType(GameMap gameMap, Coordination coordination, Class<T> type) {
     boolean emptyCell = false;
-    Optional<Entity> entity = map.get(coordination, Entity.class);
+    Optional<Entity> entity = gameMap.get(coordination, Entity.class);
     return entity.map(type::isInstance).orElse(emptyCell);
   }
 
-  public static Coordination getRandomEmptyPosition(GameMap map) {
+  public static Coordination getRandomEmptyPosition(GameMap gameMap) {
     Random random = new Random();
     int xCoordinate = random.nextInt(MIN_X_COORDINATE, MAX_X_COORDINATE);
     int yCoordinate = random.nextInt(MIN_Y_COORDINATE, MAX_Y_COORDINATE);
     Coordination coordination = new Coordination(xCoordinate, yCoordinate);
-    while (!map.fieldIsEmpty(coordination)) {
+    while (!gameMap.fieldIsEmpty(coordination)) {
       xCoordinate = random.nextInt(MIN_X_COORDINATE, MAX_X_COORDINATE);
       yCoordinate = random.nextInt(MIN_Y_COORDINATE, MAX_Y_COORDINATE);
       coordination = new Coordination(xCoordinate, yCoordinate);

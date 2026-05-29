@@ -3,9 +3,9 @@ package main;
 public class Main {
 
   public static void main(String[] args) {
-    GameMap map = new GameMap();
+    GameMap gameMap = new GameMap();
     Graph graph = new Graph();
-    Simulation simulation = new Simulation(map, graph);
+    Simulation simulation = new Simulation(gameMap, graph);
     simulation.startSimulation();
   }
 }

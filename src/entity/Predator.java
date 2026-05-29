@@ -18,12 +18,10 @@ import main.GameMap;
 
 public class Predator extends Creature {
 
-  // create default predator
   public Predator() {
     super(DEFAULT_PREDATOR_HP, DEFAULT_PREDATOR_SPEED);
   }
 
-  // create custom predator
   public Predator(int hp, int speed) {
     super(hp, speed);
   }
@@ -33,10 +31,10 @@ public class Predator extends Creature {
   }
 
   @Override
-  public void reproduce(GameMap map) {
+  public void reproduce(GameMap gameMap) {
     if (getHp() > MIN_HP_FOR_REPRODUCTION) {
       setHp(getHp() - CHILD_COST);
-      SPAWNER.spawnToMap(map, PREDATOR);
+      SPAWNER.spawnToMap(gameMap, PREDATOR);
     }
   }
 
@@ -46,29 +44,29 @@ public class Predator extends Creature {
   }
 
   @Override
-  public void makeAttack(GameMap map, Coordination goalCoordinate) {
-    Creature goalCreature = map.get(goalCoordinate, Creature.class)
+  public boolean checkBarrier(GameMap gameMap, Coordination followCoordinate) {
+    return (checkClassType(gameMap, followCoordinate, Rock.class)
+        || checkClassType(gameMap, followCoordinate, Tree.class)
+        || checkClassType(gameMap, followCoordinate, Grass.class)
+        || checkClassType(gameMap, followCoordinate, Predator.class));
+  }
+
+  @Override
+  public boolean isGoal(GameMap gameMap, Coordination followCoordinate) {
+    return (checkClassType(gameMap, followCoordinate, Herbivore.class));
+  }
+
+  @Override
+  public void makeAttack(GameMap gameMap, Coordination goalCoordinate) {
+    Creature goalCreature = gameMap.get(goalCoordinate, Creature.class)
         .orElseThrow(() -> new EntityNotExistException("Entity doesn't exist"));
     if (isDead(goalCreature)) {
       upHp();
-      map.remove(goalCoordinate);
+      gameMap.remove(goalCoordinate);
       return;
     }
     int herbivoreHp = goalCreature.getHp();
     goalCreature.setHp(herbivoreHp - getPower());
-  }
-
-  @Override
-  public boolean checkBarrier(GameMap map, Coordination node) {
-    return (checkClassType(map, node, Rock.class)
-        || checkClassType(map, node, Tree.class)
-        || checkClassType(map, node, Grass.class)
-        || checkClassType(map, node, Predator.class));
-  }
-
-  @Override
-  public boolean isGoal(GameMap map, Coordination followCoordinate) {
-    return (checkClassType(map, followCoordinate, Herbivore.class));
   }
 
   private boolean isDead(Creature goalCreature) {

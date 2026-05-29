@@ -70,18 +70,18 @@ public final class Simulation {
     System.out.flush();
   }
 
-  private void renderField(GameMap map) {
+  private void renderField(GameMap gameMap) {
     for (int yCoordinate = MAX_Y_COORDINATE; yCoordinate >= MIN_Y_COORDINATE; yCoordinate--) {
       for (int xCoordinate = MIN_X_COORDINATE; xCoordinate <= MAX_X_COORDINATE; xCoordinate++) {
         Optional<String> sprite = Optional.empty();
-        Optional<Entity> entity = map.get(
+        Optional<Entity> entity = gameMap.get(
             new Coordination(xCoordinate, yCoordinate), Entity.class);
         if (entity.isPresent()) {
           sprite = getEntitySprite(entity.get());
         }
         System.out.print(sprite.orElse(SpriteType.EMPTY.getCode()));
 
-        printInfoBar(map, xCoordinate, yCoordinate);
+        printInfoBar(gameMap, xCoordinate, yCoordinate);
       }
       System.out.println();
     }
@@ -99,21 +99,21 @@ public final class Simulation {
     };
   }
 
-  private void printInfoBar(GameMap map, int xCoordinate, int yCoordinate) {
+  private void printInfoBar(GameMap gameMap, int xCoordinate, int yCoordinate) {
     Queue<Coordination> predatorCoordinates = gameMap.getPositions(gameMap, Predator.class);
     Queue<Coordination> herbivoreCoordinates = gameMap.getPositions(gameMap, Herbivore.class);
 
-    printInfoByCreatures(map, herbivoreCoordinates, isTopCoordinate(xCoordinate, yCoordinate));
+    printInfoByCreatures(gameMap, herbivoreCoordinates, isTopCoordinate(xCoordinate, yCoordinate));
 
-    printInfoByCreatures(map, predatorCoordinates, isAfterTopCoordinate(xCoordinate, yCoordinate));
+    printInfoByCreatures(gameMap, predatorCoordinates, isAfterTopCoordinate(xCoordinate, yCoordinate));
 
   }
 
-  private void printInfoByCreatures(GameMap map, Queue<Coordination> creaturesCoordinates,
+  private void printInfoByCreatures(GameMap gameMap, Queue<Coordination> creaturesCoordinates,
       boolean positionFlag) {
     if (positionFlag) {
       while (!creaturesCoordinates.isEmpty()) {
-        Creature creature = map.get(creaturesCoordinates.poll(), Creature.class)
+        Creature creature = gameMap.get(creaturesCoordinates.poll(), Creature.class)
             .orElseThrow(() -> new EntityNotExistException("Entity doesn't exist"));
         Optional<String> sprite = getEntitySprite(creature);
         sprite.ifPresent(s -> System.out.print("[ " + s + " : " + creature.getHp() + " hp ]"));

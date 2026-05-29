@@ -15,13 +15,11 @@ import main.GameMap;
 import main.Graph;
 
 
-// действия, совершаемые каждый ход. Примеры - передвижение существ, добавить травы или травоядных, если их осталось слишком мало
 public final class TurnAction {
 
   private TurnAction() {
   }
 
-  //передвижение всех существ
   public static void makeMoveForEverybody(GameMap gameMap, Graph graph) {
     Queue<Coordination> predatorCoordinates = gameMap.getPositions(gameMap, Predator.class);
     Queue<Coordination> herbivoresCoordinates = gameMap.getPositions(gameMap, Herbivore.class);
@@ -38,12 +36,12 @@ public final class TurnAction {
       predator.makeMove(gameMap, graph);
     }
 
-    createMissingGrass(gameMap.getPositions(gameMap, Grass.class), gameMap);
+    createMissingGrass(gameMap, gameMap.getPositions(gameMap, Grass.class));
   }
 
-  private static void createMissingGrass(Queue<Coordination> grassCoordinates, GameMap map) {
+  private static void createMissingGrass(GameMap gameMap, Queue<Coordination> grassCoordinates) {
     if (!isGrassCountEnough(grassCoordinates)) {
-      SPAWNER.spawnToMap(map, GRASS);
+      SPAWNER.spawnToMap(gameMap, GRASS);
     }
   }
 
