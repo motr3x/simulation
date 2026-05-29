@@ -81,7 +81,7 @@ public final class Simulation {
         }
         System.out.print(sprite.orElse(SpriteType.EMPTY.getCode()));
 
-        printInfoBar(gameMap, xCoordinate, yCoordinate);
+//        printInfoBar(gameMap, xCoordinate, yCoordinate);
       }
       System.out.println();
     }
@@ -99,34 +99,34 @@ public final class Simulation {
     };
   }
 
-  private void printInfoBar(GameMap gameMap, int xCoordinate, int yCoordinate) {
-    Queue<Coordination> predatorCoordinates = gameMap.getPositions(gameMap, Predator.class);
-    Queue<Coordination> herbivoreCoordinates = gameMap.getPositions(gameMap, Herbivore.class);
-
-    printInfoByCreatures(gameMap, herbivoreCoordinates, isTopCoordinate(xCoordinate, yCoordinate));
-
-    printInfoByCreatures(gameMap, predatorCoordinates, isAfterTopCoordinate(xCoordinate, yCoordinate));
-
-  }
-
-  private void printInfoByCreatures(GameMap gameMap, Queue<Coordination> creaturesCoordinates,
-      boolean positionFlag) {
-    if (positionFlag) {
-      while (!creaturesCoordinates.isEmpty()) {
-        Creature creature = gameMap.get(creaturesCoordinates.poll(), Creature.class)
-            .orElseThrow(() -> new EntityNotExistException("Entity doesn't exist"));
-        Optional<String> sprite = getEntitySprite(creature);
-        sprite.ifPresent(s -> System.out.print("[ " + s + " : " + creature.getHp() + " hp ]"));
-      }
-    }
-  }
-
-  private boolean isTopCoordinate(int xCoordinate, int yCoordinate) {
-    return yCoordinate == MAX_Y_COORDINATE && xCoordinate == MAX_X_COORDINATE;
-  }
-
-  private boolean isAfterTopCoordinate(int xCoordinate, int yCoordinate) {
-    return yCoordinate == PENULTIMATE_Y_COORDINATE && xCoordinate == MAX_X_COORDINATE;
-  }
+//  private void printInfoBar(GameMap gameMap, int xCoordinate, int yCoordinate) {
+//    Queue<Coordination> predatorCoordinates = gameMap.getPositions(gameMap, Predator.class);
+//    Queue<Coordination> herbivoreCoordinates = gameMap.getPositions(gameMap, Herbivore.class);
+//
+//    printInfoByCreatures(gameMap, herbivoreCoordinates, isTopCoordinate(xCoordinate, yCoordinate));
+//
+//    printInfoByCreatures(gameMap, predatorCoordinates, isAfterTopCoordinate(xCoordinate, yCoordinate));
+//
+//  }
+//
+//  private void printInfoByCreatures(GameMap gameMap, Queue<Coordination> creaturesCoordinates,
+//      boolean positionFlag) {
+//    if (positionFlag) {
+//      while (!creaturesCoordinates.isEmpty()) {
+//        Creature creature = gameMap.get(creaturesCoordinates.poll(), Creature.class)
+//            .orElseThrow(() -> new EntityNotExistException("Entity doesn't exist"));
+//        Optional<String> sprite = getEntitySprite(creature);
+//        sprite.ifPresent(s -> System.out.print("[ " + s + " : " + creature.getHp() + " hp ]"));
+//      }
+//    }
+//  }
+//
+//  private boolean isTopCoordinate(int xCoordinate, int yCoordinate) {
+//    return yCoordinate == MAX_Y_COORDINATE && xCoordinate == MAX_X_COORDINATE;
+//  }
+//
+//  private boolean isAfterTopCoordinate(int xCoordinate, int yCoordinate) {
+//    return yCoordinate == PENULTIMATE_Y_COORDINATE && xCoordinate == MAX_X_COORDINATE;
+//  }
 
 }
