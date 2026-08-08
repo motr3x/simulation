@@ -7,10 +7,8 @@ import static config.SimulationConfig.MAX_X_COORDINATE;
 import static config.SimulationConfig.MAX_Y_COORDINATE;
 import static config.SimulationConfig.MIN_X_COORDINATE;
 import static config.SimulationConfig.MIN_Y_COORDINATE;
-import static config.SimulationConfig.PENULTIMATE_Y_COORDINATE;
 
 import entity.Coordination;
-import entity.Creature;
 import entity.Entity;
 import entity.Herbivore;
 import entity.Predator;
@@ -18,9 +16,7 @@ import entity.SpriteType;
 import entity.staticObject.Grass;
 import entity.staticObject.Rock;
 import entity.staticObject.Tree;
-import exception.EntityNotExistException;
 import java.util.Optional;
-import java.util.Queue;
 
 
 public final class Simulation {
@@ -29,40 +25,52 @@ public final class Simulation {
   private final GameMap gameMap;
   private final Graph graph;
   private int roundCount = 0;
+  private static final String ROUND_OUTPUT = "Round:";
+  private static final int SLEEP_TIME = 1200;
+  private Boolean stopFlag;
+  private static final String STOP_INSTRUCTION = "PRESS S TO STOP";
 
-  public Simulation(GameMap gameMap, Graph graph) {
+  public Simulation(GameMap gameMap, Graph graph, Boolean stopFlag) {
     this.gameMap = gameMap;
     this.graph = graph;
+    this.stopFlag = stopFlag;
     initMap(gameMap);
     initGraph(graph);
   }
 
   // Запустить бесконечный цикл симуляции и рендеринга
   public void startSimulation() {
-    renderField(gameMap);
-    while (true) {
+    while (!Boolean.TRUE.equals(stopFlag)) {
       nextTurn();
-      ++roundCount;
+      sleep();
     }
   }
 
-  // Приостановить бесконечный цикл симуляции и рендеринга
-  public void pauseSimulation() {
-
-  }
-
-  //Просимулировать и отрендерить один ход
-  public void nextTurn() {
-    System.out.println("ROUND: " + roundCount);
-    renderField(gameMap);
-    makeMoveForEverybody(gameMap, graph);
+  public void sleep() {
     try {
-      Thread.sleep(500L);
+      Thread.sleep(SLEEP_TIME);
     } catch (InterruptedException e) {
       throw new RuntimeException(e);
     }
-    renderField(gameMap);
+  }
+
+
+  // Приостановить бесконечный цикл симуляции и рендеринга
+  public void pauseSimulation() {
+    stopFlag = true;
+  }
+
+  public void continueSimulation(){
+    stopFlag = false;
+  }
+
+
+  //Просимулировать и отрендерить один ход
+  public void nextTurn() {
     clearScreen();
+    System.out.println(ROUND_OUTPUT + roundCount++);
+    renderField(gameMap);
+    makeMoveForEverybody(gameMap, graph);
   }
 
   private void clearScreen() {
@@ -80,7 +88,9 @@ public final class Simulation {
           sprite = getEntitySprite(entity.get());
         }
         System.out.print(sprite.orElse(SpriteType.EMPTY.getCode()));
-
+        if(xCoordinate == MAX_X_COORDINATE && yCoordinate == MIN_Y_COORDINATE){
+          System.out.print(STOP_INSTRUCTION);
+        }
 //        printInfoBar(gameMap, xCoordinate, yCoordinate);
       }
       System.out.println();
