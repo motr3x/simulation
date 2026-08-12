@@ -1,8 +1,8 @@
 package main;
 
-import static actions.InitActions.initGraph;
-import static actions.InitActions.initMap;
-import static actions.TurnAction.makeMoveForEverybody;
+import static actions.impl.InitActions.initGraph;
+import static actions.impl.InitActions.initMap;
+import static actions.impl.TurnAction.makeMoveForEverybody;
 import static config.SimulationConfig.MAX_X_COORDINATE;
 import static config.SimulationConfig.MAX_Y_COORDINATE;
 import static config.SimulationConfig.MIN_X_COORDINATE;
@@ -21,14 +21,14 @@ import java.util.Optional;
 
 public final class Simulation {
 
-
+  private static final String ROUND_OUTPUT = "Round:";
+  private static final int SLEEP_TIME = 1200;
+  private static final String STOP_INSTRUCTION = "PRESS S TO STOP";
+  private static final String CLEAR = "\033[H\033[2J";
   private final GameMap gameMap;
   private final Graph graph;
   private int roundCount = 0;
-  private static final String ROUND_OUTPUT = "Round:";
-  private static final int SLEEP_TIME = 1200;
   private Boolean stopFlag;
-  private static final String STOP_INSTRUCTION = "PRESS S TO STOP";
 
   public Simulation(GameMap gameMap, Graph graph, Boolean stopFlag) {
     this.gameMap = gameMap;
@@ -57,11 +57,11 @@ public final class Simulation {
 
   // Приостановить бесконечный цикл симуляции и рендеринга
   public void pauseSimulation() {
-    stopFlag = true;
+    stopFlag = Boolean.TRUE;
   }
 
   public void continueSimulation(){
-    stopFlag = false;
+    stopFlag = Boolean.FALSE;
   }
 
 
@@ -74,7 +74,7 @@ public final class Simulation {
   }
 
   private void clearScreen() {
-    System.out.print("\033[H\033[2J");
+    System.out.print(CLEAR);
     System.out.flush();
   }
 
