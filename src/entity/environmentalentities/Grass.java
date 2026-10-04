@@ -1,4 +1,4 @@
-package entity.staticObject;
+package entity.environmentalentities;
 
 import entity.Entity;
 

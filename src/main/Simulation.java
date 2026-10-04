@@ -1,21 +1,16 @@
 package main;
 
-import static actions.impl.InitActions.initGraph;
-import static actions.impl.InitActions.initMap;
-import static actions.impl.TurnAction.makeMoveForEverybody;
-import static config.SimulationConfig.MAX_X_COORDINATE;
-import static config.SimulationConfig.MAX_Y_COORDINATE;
-import static config.SimulationConfig.MIN_X_COORDINATE;
-import static config.SimulationConfig.MIN_Y_COORDINATE;
 
-import entity.Coordination;
+
+import config.SimulationConfig;
+import entity.Coordinates;
 import entity.Entity;
 import entity.Herbivore;
 import entity.Predator;
 import entity.SpriteType;
-import entity.staticObject.Grass;
-import entity.staticObject.Rock;
-import entity.staticObject.Tree;
+import entity.environmentalentities.Grass;
+import entity.environmentalentities.Rock;
+import entity.environmentalentities.Tree;
 import java.util.Optional;
 
 
@@ -34,11 +29,11 @@ public final class Simulation {
     this.gameMap = gameMap;
     this.graph = graph;
     this.stopFlag = stopFlag;
-    initMap(gameMap);
-    initGraph(graph);
+
+    actions.InitActions.initMap(gameMap);
+    actions.InitActions.initGraph(graph);
   }
 
-  // Запустить бесконечный цикл симуляции и рендеринга
   public void startSimulation() {
     while (!Boolean.TRUE.equals(stopFlag)) {
       nextTurn();
@@ -55,22 +50,19 @@ public final class Simulation {
   }
 
 
-  // Приостановить бесконечный цикл симуляции и рендеринга
   public void pauseSimulation() {
     stopFlag = Boolean.TRUE;
   }
 
-  public void continueSimulation(){
+  public void continueSimulation() {
     stopFlag = Boolean.FALSE;
   }
 
-
-  //Просимулировать и отрендерить один ход
   public void nextTurn() {
     clearScreen();
     System.out.println(ROUND_OUTPUT + roundCount++);
     renderField(gameMap);
-    makeMoveForEverybody(gameMap, graph);
+    actions.TurnAction.makeMoveForEverybody(gameMap, graph);
   }
 
   private void clearScreen() {
@@ -79,19 +71,18 @@ public final class Simulation {
   }
 
   private void renderField(GameMap gameMap) {
-    for (int yCoordinate = MAX_Y_COORDINATE; yCoordinate >= MIN_Y_COORDINATE; yCoordinate--) {
-      for (int xCoordinate = MIN_X_COORDINATE; xCoordinate <= MAX_X_COORDINATE; xCoordinate++) {
+    for (int yCoordinate = SimulationConfig.MAX_Y_COORDINATE; yCoordinate >= SimulationConfig.MIN_Y_COORDINATE; yCoordinate--) {
+      for (int xCoordinate = SimulationConfig.MIN_X_COORDINATE; xCoordinate <= SimulationConfig.MAX_X_COORDINATE; xCoordinate++) {
         Optional<String> sprite = Optional.empty();
         Optional<Entity> entity = gameMap.get(
-            new Coordination(xCoordinate, yCoordinate), Entity.class);
+            new Coordinates(xCoordinate, yCoordinate), Entity.class);
         if (entity.isPresent()) {
           sprite = getEntitySprite(entity.get());
         }
         System.out.print(sprite.orElse(SpriteType.EMPTY.getCode()));
-        if(xCoordinate == MAX_X_COORDINATE && yCoordinate == MIN_Y_COORDINATE){
+        if (xCoordinate == SimulationConfig.MAX_X_COORDINATE && yCoordinate == SimulationConfig.MIN_Y_COORDINATE) {
           System.out.print(STOP_INSTRUCTION);
         }
-//        printInfoBar(gameMap, xCoordinate, yCoordinate);
       }
       System.out.println();
     }
@@ -108,35 +99,4 @@ public final class Simulation {
       case null, default -> Optional.empty();
     };
   }
-
-//  private void printInfoBar(GameMap gameMap, int xCoordinate, int yCoordinate) {
-//    Queue<Coordination> predatorCoordinates = gameMap.getPositions(gameMap, Predator.class);
-//    Queue<Coordination> herbivoreCoordinates = gameMap.getPositions(gameMap, Herbivore.class);
-//
-//    printInfoByCreatures(gameMap, herbivoreCoordinates, isTopCoordinate(xCoordinate, yCoordinate));
-//
-//    printInfoByCreatures(gameMap, predatorCoordinates, isAfterTopCoordinate(xCoordinate, yCoordinate));
-//
-//  }
-//
-//  private void printInfoByCreatures(GameMap gameMap, Queue<Coordination> creaturesCoordinates,
-//      boolean positionFlag) {
-//    if (positionFlag) {
-//      while (!creaturesCoordinates.isEmpty()) {
-//        Creature creature = gameMap.get(creaturesCoordinates.poll(), Creature.class)
-//            .orElseThrow(() -> new EntityNotExistException("Entity doesn't exist"));
-//        Optional<String> sprite = getEntitySprite(creature);
-//        sprite.ifPresent(s -> System.out.print("[ " + s + " : " + creature.getHp() + " hp ]"));
-//      }
-//    }
-//  }
-//
-//  private boolean isTopCoordinate(int xCoordinate, int yCoordinate) {
-//    return yCoordinate == MAX_Y_COORDINATE && xCoordinate == MAX_X_COORDINATE;
-//  }
-//
-//  private boolean isAfterTopCoordinate(int xCoordinate, int yCoordinate) {
-//    return yCoordinate == PENULTIMATE_Y_COORDINATE && xCoordinate == MAX_X_COORDINATE;
-//  }
-
 }

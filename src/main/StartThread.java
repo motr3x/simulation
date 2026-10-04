@@ -1,9 +1,9 @@
 package main;
 
-import static java.lang.Thread.sleep;
+public class StartThread implements Runnable {
 
-public class StartThread implements Runnable{
-final Simulation simulation;
+  final Simulation simulation;
+
   public StartThread(Simulation simulation) {
     this.simulation = simulation;
   }

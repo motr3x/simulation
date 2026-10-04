@@ -1,63 +1,53 @@
 package entity;
 
-import static actions.InitActions.SPAWNER;
-import static config.CreatureConfig.CHILD_COST;
-import static config.CreatureConfig.DEFAULT_CREATURE_POWER;
-import static config.CreatureConfig.DEFAULT_PREDATOR_HP;
-import static config.CreatureConfig.DEFAULT_PREDATOR_SPEED;
-import static config.CreatureConfig.MIN_HP_FOR_REPRODUCTION;
-import static config.SimulationConfig.COST_OF_HERBIVORE;
-import static entity.EntityType.PREDATOR;
-import static utility.Helper.checkClassType;
-
-import entity.staticObject.Grass;
-import entity.staticObject.Rock;
-import entity.staticObject.Tree;
+import config.CreatureConfig;
+import config.SimulationConfig;
+import entity.environmentalentities.Grass;
+import entity.environmentalentities.Rock;
+import entity.environmentalentities.Tree;
 import exception.EntityNotExistException;
 import main.GameMap;
 
 public class Predator extends Creature {
 
-  public Predator() {
-    super(DEFAULT_PREDATOR_HP, DEFAULT_PREDATOR_SPEED);
-  }
+  private final static Class<? extends Entity> GOAL = Predator.class;
 
   public Predator(int hp, int speed) {
-    super(hp, speed);
+    super(hp, speed, GOAL);
   }
 
   public int getPower() {
-    return DEFAULT_CREATURE_POWER;
+    return CreatureConfig.DEFAULT_CREATURE_POWER;
   }
 
   @Override
-  public void reproduce(GameMap gameMap) {
-    if (getHp() > MIN_HP_FOR_REPRODUCTION) {
-      setHp(getHp() - CHILD_COST);
-      SPAWNER.spawnToMap(gameMap, PREDATOR);
+  public boolean checkBarrier(GameMap gameMap, Coordinates followCoordinate) {
+    return (gameMap.checkClassType(gameMap, followCoordinate, Rock.class)
+        || gameMap.checkClassType(gameMap, followCoordinate, Tree.class)
+        || gameMap.checkClassType(gameMap, followCoordinate, Grass.class)
+        || gameMap.checkClassType(gameMap, followCoordinate, Predator.class));
+  }
+
+  @Override
+  public boolean isGoal(GameMap gameMap, Coordinates followCoordinate) {
+    return (gameMap.checkClassType(gameMap, followCoordinate, GOAL));
+  }
+
+  @Override
+  protected void reproduce(GameMap gameMap) {
+    if (getHp() > CreatureConfig.MIN_HP_FOR_REPRODUCTION) {
+      setHp(getHp() - CreatureConfig.CHILD_COST);
+      actions.InitActions.SPAWNER.spawnToMap(gameMap, EntityType.PREDATOR);
     }
   }
 
   @Override
-  public void upHp() {
-    setHp(getHp() + COST_OF_HERBIVORE);
+  protected void upHp() {
+    setHp(getHp() + SimulationConfig.COST_OF_HERBIVORE);
   }
 
   @Override
-  public boolean checkBarrier(GameMap gameMap, Coordination followCoordinate) {
-    return (checkClassType(gameMap, followCoordinate, Rock.class)
-        || checkClassType(gameMap, followCoordinate, Tree.class)
-        || checkClassType(gameMap, followCoordinate, Grass.class)
-        || checkClassType(gameMap, followCoordinate, Predator.class));
-  }
-
-  @Override
-  public boolean isGoal(GameMap gameMap, Coordination followCoordinate) {
-    return (checkClassType(gameMap, followCoordinate, Herbivore.class));
-  }
-
-  @Override
-  public void makeAttack(GameMap gameMap, Coordination goalCoordinate) {
+  protected void makeAttack(GameMap gameMap, Coordinates goalCoordinate) {
     Creature goalCreature = gameMap.get(goalCoordinate, Creature.class)
         .orElseThrow(() -> new EntityNotExistException("Entity doesn't exist"));
     if (isDead(goalCreature)) {

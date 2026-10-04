@@ -1,19 +1,19 @@
 package main;
 
-import entity.Coordination;
+import entity.Coordinates;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public final class Graph {
 
-  private final Map<Coordination, List<Coordination>> graph = new HashMap<>();
+  private final Map<Coordinates, List<Coordinates>> graph = new HashMap<>();
 
-  public Map<Coordination, List<Coordination>> get() {
+  public Map<Coordinates, List<Coordinates>> get() {
     return new HashMap<>(graph);
   }
 
-  public void set(Coordination coordination, List<Coordination> coordinates) {
-    graph.put(coordination, coordinates);
+  public void set(Coordinates parentCoordinates, List<Coordinates> childCoordinates) {
+    graph.put(parentCoordinates, childCoordinates);
   }
 }

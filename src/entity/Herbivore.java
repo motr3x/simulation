@@ -1,58 +1,48 @@
 package entity;
 
 
-import static actions.InitActions.SPAWNER;
-import static config.CreatureConfig.CHILD_COST;
-import static config.CreatureConfig.DEFAULT_HERBIVORE_HP;
-import static config.CreatureConfig.DEFAULT_HERBIVORE_SPEED;
-import static config.CreatureConfig.MIN_HP_FOR_REPRODUCTION;
-import static config.SimulationConfig.COST_OF_GRASS;
-import static entity.EntityType.HERBIVORE;
-import static utility.Helper.checkClassType;
-
-import entity.staticObject.Grass;
-import entity.staticObject.Rock;
-import entity.staticObject.Tree;
+import config.CreatureConfig;
+import config.SimulationConfig;
+import entity.environmentalentities.Rock;
+import entity.environmentalentities.Tree;
 import main.GameMap;
 
 public class Herbivore extends Creature {
 
-  public Herbivore() {
-    super(DEFAULT_HERBIVORE_HP, DEFAULT_HERBIVORE_SPEED);
-  }
+  private final static Class<? extends Entity> GOAL = Herbivore.class;
 
   public Herbivore(int hp, int speed) {
-    super(hp, speed);
+    super(hp, speed, GOAL);
   }
 
   @Override
-  public void reproduce(GameMap gameMap) {
-    if (getHp() > MIN_HP_FOR_REPRODUCTION) {
-      setHp(getHp() - CHILD_COST);
-      SPAWNER.spawnToMap(gameMap, HERBIVORE);
+  protected void reproduce(GameMap gameMap) {
+    if (getHp() > CreatureConfig.MIN_HP_FOR_REPRODUCTION) {
+      setHp(getHp() - CreatureConfig.CHILD_COST);
+      actions.InitActions.SPAWNER.spawnToMap(gameMap, EntityType.HERBIVORE);
     }
   }
 
   @Override
-  public void upHp() {
-    setHp(getHp() + COST_OF_GRASS);
+  protected void upHp() {
+    setHp(getHp() + SimulationConfig.COST_OF_GRASS);
   }
 
   @Override
-  public boolean checkBarrier(GameMap gameMap, Coordination followCoordinate) {
-    return (checkClassType(gameMap, followCoordinate, Rock.class)
-        || checkClassType(gameMap, followCoordinate, Tree.class)
-        || checkClassType(gameMap, followCoordinate, Predator.class)
-        || checkClassType(gameMap, followCoordinate, Herbivore.class));
+  public boolean checkBarrier(GameMap gameMap, Coordinates followCoordinate) {
+    return (gameMap.checkClassType(gameMap, followCoordinate, Rock.class)
+        || gameMap.checkClassType(gameMap, followCoordinate, Tree.class)
+        || gameMap.checkClassType(gameMap, followCoordinate, Predator.class)
+        || gameMap.checkClassType(gameMap, followCoordinate, Herbivore.class));
   }
 
   @Override
-  public boolean isGoal(GameMap gameMap, Coordination followCoordinate) {
-    return (checkClassType(gameMap, followCoordinate, Grass.class));
+  public boolean isGoal(GameMap gameMap, Coordinates followCoordinate) {
+    return (gameMap.checkClassType(gameMap, followCoordinate, GOAL));
   }
 
   @Override
-  public void makeAttack(GameMap gameMap, Coordination goalCreature) {
+  protected void makeAttack(GameMap gameMap, Coordinates goalCreature) {
     upHp();
     gameMap.remove(goalCreature);
   }

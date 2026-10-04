@@ -1,10 +1,10 @@
 package utility;
 
-import entity.Coordination;
+import entity.Coordinates;
 import entity.Creature;
 import entity.Entity;
 import entity.Herbivore;
-import entity.staticObject.Grass;
+import entity.environmentalentities.Grass;
 import exception.EntityNotExistException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -22,18 +22,18 @@ public final class PathFinder {
 
   }
 
-  public static Optional<Deque<Coordination>> useBfsAlgorithm(GameMap gameMap,
-      Map<Coordination, List<Coordination>> graph, Coordination start) {
+  public static Optional<Deque<Coordinates>> useBfsAlgorithm(GameMap gameMap,
+      Map<Coordinates, List<Coordinates>> graph, Coordinates start) {
 
-    Set<Coordination> visited = new LinkedHashSet<>();
-    Deque<List<Coordination>> queue = new ArrayDeque<>();
+    Set<Coordinates> visited = new LinkedHashSet<>();
+    Deque<List<Coordinates>> queue = new ArrayDeque<>();
 
     queue.add(new ArrayList<>(List.of(start)));
 
     while (!queue.isEmpty()) {
-      Deque<Coordination> path = new ArrayDeque<>(queue.getFirst());
+      Deque<Coordinates> path = new ArrayDeque<>(queue.getFirst());
       queue.removeFirst();
-      Coordination node = path.getLast();
+      Coordinates node = path.getLast();
       if (node != start) {
         Creature creature = gameMap.get(start, Creature.class)
             .orElseThrow(() -> new EntityNotExistException("Entity doesn't exist"));
@@ -59,15 +59,15 @@ public final class PathFinder {
         }
       }
 
-      List<Coordination> neighbors = graph.get(node);
+      List<Coordinates> neighbors = graph.get(node);
       if (neighbors.isEmpty()) {
         continue;
       }
-      for (Coordination neighbor : neighbors) {
+      for (Coordinates neighbor : neighbors) {
         if (visited.contains(neighbor)) {
           continue;
         }
-        List<Coordination> newPath = new ArrayList<>(path);
+        List<Coordinates> newPath = new ArrayList<>(path);
         newPath.add(neighbor);
         queue.add(newPath);
       }

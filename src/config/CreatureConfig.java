@@ -2,6 +2,10 @@ package config;
 
 public final class CreatureConfig {
 
+  private CreatureConfig(){
+
+  }
+
   public static final int HUNGRY_DAMAGE = 1;
   public static final int DEFAULT_CREATURE_HP = 30;
   public static final int DEFAULT_HERBIVORE_HP = 30;
