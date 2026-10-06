@@ -1,7 +1,6 @@
 package entity;
 
 import config.CreatureConfig;
-import config.SimulationConfig;
 import entity.environmentalentities.Grass;
 import entity.environmentalentities.Rock;
 import entity.environmentalentities.Tree;
@@ -9,6 +8,8 @@ import exception.EntityNotExistException;
 import main.GameMap;
 
 public class Predator extends Creature {
+
+  public static final int COST_OF_HERBIVORE = 5;
 
   private final static Class<? extends Entity> GOAL = Predator.class;
 
@@ -43,7 +44,7 @@ public class Predator extends Creature {
 
   @Override
   protected void upHp() {
-    setHp(getHp() + SimulationConfig.COST_OF_HERBIVORE);
+    setHp(getHp() + COST_OF_HERBIVORE);
   }
 
   @Override

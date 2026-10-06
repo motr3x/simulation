@@ -1,10 +1,10 @@
 package main;
 
 import java.util.Scanner;
-import utility.AppSettingFactory;
-import utility.AppSettings;
-import utility.DefaultAppSettings;
-import utility.InputAppSettingFactory;
+import config.AppSettingFactory;
+import config.AppSettings;
+import config.DefaultAppSettings;
+import config.InputAppSettingFactory;
 
 public class Main {
   private static final int DEFAULT_SETTINGS = 1;

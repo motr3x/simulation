@@ -1,4 +1,4 @@
-package utility;
+package config;
 
 import java.util.Scanner;
 
@@ -8,6 +8,7 @@ public class InputAppSettingFactory implements AppSettingFactory {
   private static final int MIN_BOARD_HEIGHT = 3;
   private static final int MAX_BOARD_HEIGHT = 99;
 
+
   @Override
   public AppSettings get() {
     AppSettings appSettings = new AppSettings();
@@ -15,7 +16,6 @@ public class InputAppSettingFactory implements AppSettingFactory {
     String failMessage = "Ошибка ввода";
     appSettings.boardWidth = input("Ширина карты", failMessage, MIN_BOARD_WIDTH, MAX_BOARD_WIDTH);
     appSettings.boardHeight = input("Высота карты", failMessage, MIN_BOARD_HEIGHT, MAX_BOARD_HEIGHT);;
-
     return appSettings;
   }
 

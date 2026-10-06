@@ -2,7 +2,6 @@ package main;
 
 
 
-import config.SimulationConfig;
 import entity.Coordinates;
 import entity.Entity;
 import entity.Herbivore;
@@ -24,6 +23,12 @@ public final class Simulation {
   private final Graph graph;
   private int roundCount = 0;
   private Boolean stopFlag;
+
+  public static final int MAX_X_COORDINATE = 10;
+  public static final int MIN_X_COORDINATE = 1;
+  public static final int MAX_Y_COORDINATE = 10;
+  public static final int MIN_Y_COORDINATE = 1;
+
 
   public Simulation(GameMap gameMap, Graph graph, Boolean stopFlag) {
     this.gameMap = gameMap;
@@ -71,8 +76,8 @@ public final class Simulation {
   }
 
   private void renderField(GameMap gameMap) {
-    for (int yCoordinate = SimulationConfig.MAX_Y_COORDINATE; yCoordinate >= SimulationConfig.MIN_Y_COORDINATE; yCoordinate--) {
-      for (int xCoordinate = SimulationConfig.MIN_X_COORDINATE; xCoordinate <= SimulationConfig.MAX_X_COORDINATE; xCoordinate++) {
+    for (int yCoordinate = MAX_Y_COORDINATE; yCoordinate >= MIN_Y_COORDINATE; yCoordinate--) {
+      for (int xCoordinate = MIN_X_COORDINATE; xCoordinate <= MAX_X_COORDINATE; xCoordinate++) {
         Optional<String> sprite = Optional.empty();
         Optional<Entity> entity = gameMap.get(
             new Coordinates(xCoordinate, yCoordinate), Entity.class);
@@ -80,7 +85,7 @@ public final class Simulation {
           sprite = getEntitySprite(entity.get());
         }
         System.out.print(sprite.orElse(SpriteType.EMPTY.getCode()));
-        if (xCoordinate == SimulationConfig.MAX_X_COORDINATE && yCoordinate == SimulationConfig.MIN_Y_COORDINATE) {
+        if (xCoordinate == MAX_X_COORDINATE && yCoordinate == MIN_Y_COORDINATE) {
           System.out.print(STOP_INSTRUCTION);
         }
       }

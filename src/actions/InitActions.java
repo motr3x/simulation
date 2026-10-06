@@ -1,6 +1,5 @@
 package actions;
 
-import config.SimulationConfig;
 import entity.Coordinates;
 import entity.EntityType;
 import java.util.List;
@@ -14,6 +13,17 @@ public final class InitActions {
   private InitActions() {
   }
 
+  public static final int MAX_X_COORDINATE = 10;
+  public static final int MIN_X_COORDINATE = 1;
+  public static final int MAX_Y_COORDINATE = 10;
+  public static final int MIN_Y_COORDINATE = 1;
+
+  public static final int INIT_COUNT_OF_HERBIVORE = 3;
+  public static final int INIT_COUNT_OF_PREDATOR = 3;
+  public static final int INIT_COUNT_OF_GRASS = 7;
+  public static final int INIT_COUNT_OF_TREE = 2;
+  public static final int INIT_COUNT_OF_ROCK = 1;
+
   public static final EntitySpawner SPAWNER = new EntitySpawner();
 
   public static void initMap(GameMap gameMap) {
@@ -25,8 +35,8 @@ public final class InitActions {
   }
 
   public static void initGraph(Graph graph) {
-    for (int yCoordinate = SimulationConfig.MAX_Y_COORDINATE; yCoordinate >= SimulationConfig.MIN_Y_COORDINATE; yCoordinate--) {
-      for (int xCoordinate = SimulationConfig.MIN_X_COORDINATE; xCoordinate <= SimulationConfig.MAX_X_COORDINATE; xCoordinate++) {
+    for (int yCoordinate = MAX_Y_COORDINATE; yCoordinate >= MIN_Y_COORDINATE; yCoordinate--) {
+      for (int xCoordinate = MIN_X_COORDINATE; xCoordinate <= MAX_X_COORDINATE; xCoordinate++) {
         
         if (isLowerLeftCorner(xCoordinate, yCoordinate)) {
           graph.set(new Coordinates(xCoordinate, yCoordinate),
@@ -99,7 +109,7 @@ public final class InitActions {
 
   private static void initDefaultTree(GameMap gameMap) {
     int countOfTree = 0;
-    while (countOfTree < SimulationConfig.INIT_COUNT_OF_TREE) {
+    while (countOfTree < INIT_COUNT_OF_TREE) {
       SPAWNER.spawnToMap(gameMap, EntityType.TREE);
       countOfTree++;
     }
@@ -107,7 +117,7 @@ public final class InitActions {
 
   private static void initDefaultRock(GameMap gameMap) {
     int countOfRock = 0;
-    while (countOfRock < SimulationConfig.INIT_COUNT_OF_ROCK) {
+    while (countOfRock < INIT_COUNT_OF_ROCK) {
       SPAWNER.spawnToMap(gameMap, EntityType.ROCK);
       countOfRock++;
     }
@@ -115,7 +125,7 @@ public final class InitActions {
 
   private static void initStartGrass(GameMap gameMap) {
     int countOfGrass = 0;
-    while (countOfGrass < SimulationConfig.INIT_COUNT_OF_GRASS) {
+    while (countOfGrass < INIT_COUNT_OF_GRASS) {
       SPAWNER.spawnToMap(gameMap, EntityType.GRASS);
       countOfGrass++;
     }
@@ -123,7 +133,7 @@ public final class InitActions {
 
   private static void initStartPredator(GameMap gameMap) {
     int countOfPredator = 0;
-    while (countOfPredator < SimulationConfig.INIT_COUNT_OF_PREDATOR) {
+    while (countOfPredator < INIT_COUNT_OF_PREDATOR) {
       SPAWNER.spawnToMap(gameMap, EntityType.PREDATOR);
       countOfPredator++;
     }
@@ -131,45 +141,45 @@ public final class InitActions {
 
   private static void initStartHerbivore(GameMap gameMap) {
     int countOfHerbivore = 0;
-    while (countOfHerbivore < SimulationConfig.INIT_COUNT_OF_HERBIVORE) {
+    while (countOfHerbivore < INIT_COUNT_OF_HERBIVORE) {
       SPAWNER.spawnToMap(gameMap, EntityType.HERBIVORE);
       countOfHerbivore++;
     }
   }
 
   private static boolean isRightSide(int xCoordinate, int yCoordinate) {
-    return (((yCoordinate > SimulationConfig.MIN_Y_COORDINATE) && (yCoordinate < SimulationConfig.MAX_Y_COORDINATE)) && (xCoordinate
-        == SimulationConfig.MAX_X_COORDINATE));
+    return (((yCoordinate > MIN_Y_COORDINATE) && (yCoordinate < MAX_Y_COORDINATE)) && (xCoordinate
+        == MAX_X_COORDINATE));
   }
 
   private static boolean isBottomSide(int xCoordinate, int yCoordinate) {
-    return (((xCoordinate > SimulationConfig.MIN_X_COORDINATE) && (xCoordinate < SimulationConfig.MAX_X_COORDINATE)) && (yCoordinate
-        == SimulationConfig.MIN_Y_COORDINATE));
+    return (((xCoordinate > MIN_X_COORDINATE) && (xCoordinate < MAX_X_COORDINATE)) && (yCoordinate
+        == MIN_Y_COORDINATE));
   }
 
   private static boolean isAboveSide(int xCoordinate, int yCoordinate) {
-    return (((xCoordinate > SimulationConfig.MIN_X_COORDINATE) && (xCoordinate < SimulationConfig.MAX_X_COORDINATE)) && (yCoordinate
-        == SimulationConfig.MAX_Y_COORDINATE));
+    return (((xCoordinate > MIN_X_COORDINATE) && (xCoordinate < MAX_X_COORDINATE)) && (yCoordinate
+        == MAX_Y_COORDINATE));
   }
 
   private static boolean isLeftSide(int xCoordinate, int yCoordinate) {
-    return (((yCoordinate > SimulationConfig.MIN_Y_COORDINATE) && (yCoordinate < SimulationConfig.MAX_Y_COORDINATE)) && (xCoordinate
-        == SimulationConfig.MIN_X_COORDINATE));
+    return (((yCoordinate > MIN_Y_COORDINATE) && (yCoordinate < MAX_Y_COORDINATE)) && (xCoordinate
+        == MIN_X_COORDINATE));
   }
 
   private static boolean isLowerRightCorner(int xCoordinate, int yCoordinate) {
-    return ((yCoordinate == SimulationConfig.MIN_Y_COORDINATE) && (xCoordinate == SimulationConfig.MAX_X_COORDINATE));
+    return ((yCoordinate == MIN_Y_COORDINATE) && (xCoordinate == MAX_X_COORDINATE));
   }
 
   private static boolean isUpperRightCorner(int xCoordinate, int yCoordinate) {
-    return ((yCoordinate == SimulationConfig.MAX_Y_COORDINATE) && (xCoordinate == SimulationConfig.MAX_X_COORDINATE));
+    return ((yCoordinate == MAX_Y_COORDINATE) && (xCoordinate == MAX_X_COORDINATE));
   }
 
   private static boolean isUpperLeftCorner(int xCoordinate, int yCoordinate) {
-    return ((yCoordinate == SimulationConfig.MAX_Y_COORDINATE) && (xCoordinate == SimulationConfig.MIN_X_COORDINATE));
+    return ((yCoordinate == MAX_Y_COORDINATE) && (xCoordinate == MIN_X_COORDINATE));
   }
 
   private static boolean isLowerLeftCorner(int xCoordinate, int yCoordinate) {
-    return ((yCoordinate == SimulationConfig.MIN_Y_COORDINATE) && (xCoordinate == SimulationConfig.MIN_X_COORDINATE));
+    return ((yCoordinate == MIN_Y_COORDINATE) && (xCoordinate == MIN_X_COORDINATE));
   }
 }

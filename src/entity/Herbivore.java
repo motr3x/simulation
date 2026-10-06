@@ -2,7 +2,6 @@ package entity;
 
 
 import config.CreatureConfig;
-import config.SimulationConfig;
 import entity.environmentalentities.Rock;
 import entity.environmentalentities.Tree;
 import main.GameMap;
@@ -15,6 +14,8 @@ public class Herbivore extends Creature {
     super(hp, speed, GOAL);
   }
 
+  public static final int COST_OF_GRASS = 5;
+
   @Override
   protected void reproduce(GameMap gameMap) {
     if (getHp() > CreatureConfig.MIN_HP_FOR_REPRODUCTION) {
@@ -25,7 +26,7 @@ public class Herbivore extends Creature {
 
   @Override
   protected void upHp() {
-    setHp(getHp() + SimulationConfig.COST_OF_GRASS);
+    setHp(getHp() + COST_OF_GRASS);
   }
 
   @Override

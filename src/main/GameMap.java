@@ -1,7 +1,6 @@
 package main;
 
 
-import config.SimulationConfig;
 import entity.Coordinates;
 import entity.Entity;
 import exception.EntityNotExistException;

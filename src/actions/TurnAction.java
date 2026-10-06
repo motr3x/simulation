@@ -1,6 +1,5 @@
 package actions;
 
-import config.SimulationConfig;
 import entity.Coordinates;
 import entity.Creature;
 import entity.EntityType;
@@ -17,6 +16,8 @@ public final class TurnAction {
 
   private TurnAction() {
   }
+
+  public static final int MIN_COUNT_OF_GRASS = 6;
 
   public static void makeMoveForEverybody(GameMap gameMap, Graph graph) {
     Queue<Coordinates> predatorCoordinates = gameMap.getCoordinates(gameMap, Predator.class);
@@ -44,7 +45,7 @@ public final class TurnAction {
   }
 
   private static boolean isGrassCountEnough(Queue<Coordinates> grassCoordinates) {
-    return (grassCoordinates.size() >= SimulationConfig.MIN_COUNT_OF_GRASS);
+    return (grassCoordinates.size() >= MIN_COUNT_OF_GRASS);
   }
 }
 
